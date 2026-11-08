@@ -70,13 +70,16 @@ d.text((m + 48, m + 518), "12 周 · 每周必须打一场 · 积分第一去打
 d.text((m + 48, m + 566), "手机竖屏可玩，打开就打，不用下载", font=F(SANS, 24), fill=MUTED)
 
 # ---------- 二维码 ----------
-qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_M, box_size=10, border=2)
+probe = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_M, box_size=1, border=2)
+probe.add_data(URL)
+probe.make(fit=True)
+modules = probe.modules_count + 4          # 含 2 格静区
+box = max(2, 420 // modules)               # 整数倍放大，避免模块宽窄不一
+qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_M, box_size=box, border=2)
 qr.add_data(URL)
 qr.make(fit=True)
 qimg = qr.make_image(fill_color=INK, back_color="white").convert("RGB")
-
-QS = 380
-qimg = qimg.resize((QS, QS), Image.NEAREST)
+QS = qimg.size[0]
 cx, cy = (W - QS) // 2, 700
 pad = 14
 d.rectangle([cx - pad - 4, cy - pad - 4, cx + QS + pad + 4, cy + QS + pad + 4], fill=INK)
@@ -113,5 +116,6 @@ d.text((m + 48, H - 120), "与任何真实学校、真实 App 以及达尔文先
 OUT.parent.mkdir(parents=True, exist_ok=True)
 img.save(OUT, "PNG")
 print("saved", OUT, img.size)
+
 
 
