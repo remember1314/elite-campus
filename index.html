@@ -1,0 +1,3470 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>实力至上主义校园 · 校园打 App</title>
+<meta name="description" content="把校园跑换成校园打的校园题材回合制决斗游戏。" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f1ead9'/%3E%3Crect x='6' y='6' width='52' height='52' fill='none' stroke='%23bf2c22' stroke-width='4'/%3E%3Ctext x='32' y='45' font-size='34' text-anchor='middle' fill='%23bf2c22' font-family='serif'%3E实%3C/text%3E%3C/svg%3E" />
+<style>
+﻿/* =========================================================
+   《实力至上主义校园》 · 样式
+   ========================================================= */
+
+:root {
+  --ink: #17130e;
+  --ink-2: #3c3428;
+  --paper: #f1ead9;
+  --paper-2: #faf6ec;
+  --paper-3: #e7dfcd;
+  --red: #bf2c22;
+  --red-deep: #8d1a12;
+  --gold: #b3862f;
+  --muted: #726656;
+  --line: #241d15;
+  --shadow: 5px 5px 0 rgba(23, 19, 14, 0.9);
+  --serif: "Songti SC", "STSong", "Noto Serif SC", "SimSun", "宋体", serif;
+  --sans: "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "微软雅黑", sans-serif;
+  --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family: var(--sans);
+  color: var(--ink);
+  background: #e9e2d0;
+  background-image:
+    radial-gradient(1200px 700px at 12% -10%, #f6f0e0 0%, transparent 60%),
+    radial-gradient(900px 600px at 100% 100%, #ded5bf 0%, transparent 55%),
+    repeating-linear-gradient(0deg, rgba(23, 19, 14, 0.028) 0 1px, transparent 1px 28px);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button { font-family: inherit; color: inherit; }
+
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.32'/%3E%3C/svg%3E");
+}
+
+/* ---------------- 屏幕 ---------------- */
+.screen {
+  position: fixed;
+  inset: 0;
+  display: none;
+  overflow: hidden;
+}
+.screen.is-active { display: flex; }
+
+/* ---------------- 标题页 ---------------- */
+#screen-title {
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.title-wrap {
+  position: relative;
+  width: min(760px, 100%);
+  background: var(--paper-2);
+  border: 2.5px solid var(--line);
+  box-shadow: 14px 14px 0 rgba(23, 19, 14, 0.92);
+  padding: clamp(28px, 5vw, 56px) clamp(24px, 5vw, 60px);
+  animation: rise 0.6s cubic-bezier(.2, .9, .25, 1) both;
+}
+.title-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(23, 19, 14, 0.25);
+  pointer-events: none;
+}
+
+.title-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px dashed rgba(23, 19, 14, 0.4);
+  padding-bottom: 14px;
+  margin-bottom: 26px;
+}
+.title-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  font-family: var(--mono);
+}
+
+.crest {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  display: grid;
+  place-items: center;
+  font-family: var(--serif);
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--red);
+  background:
+    repeating-conic-gradient(from 0deg, rgba(191, 44, 34, 0.1) 0deg 6deg, transparent 6deg 12deg),
+    var(--paper);
+  box-shadow: inset 0 0 0 3px var(--paper-2);
+  flex: none;
+}
+.crest-sm { width: 40px; height: 40px; font-size: 22px; }
+
+.title-wrap h1 {
+  font-family: var(--serif);
+  font-size: clamp(46px, 8.6vw, 86px);
+  line-height: 0.98;
+  margin: 0;
+  letter-spacing: 0.02em;
+  font-weight: 700;
+}
+.title-sub {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 12px 0 26px;
+}
+.title-quote {
+  border-left: 4px solid var(--red);
+  padding: 8px 0 8px 16px;
+  font-family: var(--serif);
+  font-size: clamp(15px, 2.2vw, 19px);
+  line-height: 1.7;
+  margin-bottom: 30px;
+  color: var(--ink-2);
+}
+.title-quote cite {
+  display: block;
+  margin-top: 4px;
+  font-style: normal;
+  font-size: 12px;
+  color: var(--muted);
+  font-family: var(--sans);
+}
+.title-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.title-stamp {
+  position: absolute;
+  right: clamp(10px, 3vw, 30px);
+  top: clamp(90px, 18vw, 150px);
+  transform: rotate(-14deg);
+  color: var(--red);
+  border: 3px double var(--red);
+  padding: 8px 12px;
+  font-family: var(--serif);
+  font-size: 18px;
+  letter-spacing: 0.3em;
+  opacity: 0.82;
+  pointer-events: none;
+}
+.foot-link { color: var(--red); text-decoration: none; border-bottom: 1px dotted rgba(191,44,34,.55); }
+.foot-link:hover { border-bottom-style: solid; }
+
+.title-foot {
+  margin-top: 30px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(23, 19, 14, 0.3);
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* ---------------- 按钮 ---------------- */
+.btn {
+  border: 1.5px solid var(--line);
+  background: var(--paper-2);
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.15s ease, color 0.15s ease;
+  box-shadow: 3px 3px 0 rgba(23, 19, 14, 0.9);
+  user-select: none;
+}
+.btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 rgba(23, 19, 14, 0.9); }
+.btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 rgba(23, 19, 14, 0.9); }
+.btn:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: 2px 2px 0 rgba(23, 19, 14, 0.5); }
+
+.btn-lg { padding: 14px 34px; font-size: 17px; }
+.btn-solid { background: var(--ink); color: var(--paper); }
+.btn-solid:hover { background: #000; }
+.btn-primary {
+  background: var(--red);
+  color: #fff7ee;
+  border-color: var(--red-deep);
+  box-shadow: 4px 4px 0 rgba(23, 19, 14, 0.9);
+}
+.btn-primary:hover { background: #a8231b; }
+.btn-ghost { background: transparent; }
+.btn-sm { padding: 5px 10px; font-size: 12px; box-shadow: 2px 2px 0 rgba(23, 19, 14, 0.85); }
+.btn-danger { color: var(--red); border-color: var(--red); }
+
+/* ---------------- 游戏页 ---------------- */
+#screen-game { flex-direction: column; min-width: 0; }
+
+.topbar {
+  flex: none;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 10px clamp(14px, 2.4vw, 28px);
+  background: var(--paper-2);
+  border-bottom: 2px solid var(--line);
+  box-shadow: 0 3px 0 rgba(23, 19, 14, 0.08);
+  z-index: 5;
+  flex-wrap: wrap;
+}
+.brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.brand-name {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.brand-sub {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.hud {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 2vw, 26px);
+  flex-wrap: wrap;
+}
+.hud-item { display: flex; flex-direction: column; line-height: 1.15; }
+.hud-k {
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.hud-v { font-family: var(--mono); font-size: 17px; font-weight: 700; }
+.hud-v .dim { color: var(--muted); font-size: 11px; font-weight: 500; }
+.hud-v.num { font-variant-numeric: tabular-nums; }
+.hud-v.is-up { animation: pop 0.4s ease; color: var(--red); }
+#hud-tier { font-family: var(--serif); font-size: 20px; color: var(--red); }
+
+.ticker {
+  flex: none;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 5px clamp(14px, 2.4vw, 28px);
+  background: var(--ink);
+  color: #ede5d3;
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.ticker-label {
+  flex: none;
+  color: #e8b23a;
+  border: 1px solid #e8b23a;
+  padding: 0 6px;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+}
+.ticker-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0.9;
+}
+
+.board {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 344px;
+  gap: 18px;
+  padding: 18px clamp(14px, 2.4vw, 28px) 24px;
+  align-content: stretch;
+}
+.col { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.log-panel { display: flex; flex-direction: column; flex: 1; min-height: 180px; }
+
+/* ---------------- 面板 ---------------- */
+.panel {
+  background: var(--paper-2);
+  border: 1.5px solid var(--line);
+  box-shadow: var(--shadow);
+  position: relative;
+}
+.panel-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1.5px solid var(--line);
+  background:
+    linear-gradient(180deg, rgba(23, 19, 14, 0.045), transparent);
+}
+.panel-head h2 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 16px;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+.panel-tag {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  border: 1px solid rgba(23, 19, 14, 0.3);
+  padding: 1px 5px;
+  white-space: nowrap;
+}
+.panel-body { padding: 14px; }
+
+/* 周次条 */
+.week-strip {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 4px;
+  padding: 22px 14px 0;
+}
+.week-cell {
+  height: 26px;
+  border: 1px solid rgba(23, 19, 14, 0.28);
+  display: grid;
+  place-items: center;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: rgba(60, 52, 40, 0.62);
+  background: rgba(23, 19, 14, 0.03);
+  position: relative;
+}
+.week-cell.done { background: rgba(23, 19, 14, 0.72); color: var(--paper); border-color: var(--ink); }
+.week-cell.now {
+  background: var(--red);
+  border-color: var(--red-deep);
+  color: #fff;
+  font-weight: 700;
+  animation: pulse 2.4s infinite;
+}
+.week-cell.now::after {
+  content: "本周";
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  color: var(--red);
+  white-space: nowrap;
+}
+.week-cell.boss::after { content: "副本"; color: var(--gold); }
+
+/* 行动点 */
+.ap-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px 2px;
+}
+.ap-pips { display: flex; gap: 5px; }
+.ap-pip {
+  width: 22px;
+  height: 8px;
+  background: var(--ink);
+  transform: skewX(-18deg);
+}
+.ap-pip.off { background: rgba(23, 19, 14, 0.16); }
+.ap-text { font-size: 11px; color: var(--muted); letter-spacing: 0.08em; }
+
+/* 行动 */
+.actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 12px 14px 4px;
+}
+.action-btn {
+  position: relative;
+  text-align: left;
+  border: 1.5px solid var(--line);
+  background: var(--paper);
+  padding: 12px 12px 11px 46px;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 rgba(23, 19, 14, 0.85);
+  transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.15s ease;
+  min-height: 76px;
+}
+.action-btn:hover:not(:disabled) { background: #fffdf5; transform: translate(-1px, -1px); box-shadow: 4px 4px 0 rgba(23, 19, 14, 0.9); }
+.action-btn:active:not(:disabled) { transform: translate(2px, 2px); box-shadow: 1px 1px 0 rgba(23, 19, 14, 0.9); }
+.action-btn:disabled { opacity: 0.42; cursor: not-allowed; box-shadow: 2px 2px 0 rgba(23, 19, 14, 0.4); }
+.action-btn:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+.action-no {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  width: 26px;
+  height: 26px;
+  border: 1.5px solid var(--line);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  background: var(--paper-2);
+}
+.action-name { display: block; font-family: var(--serif); font-size: 16px; font-weight: 700; letter-spacing: 0.06em; }
+.action-desc { display: block; font-size: 11px; color: var(--muted); line-height: 1.5; margin-top: 4px; }
+.action-cost {
+  display: inline-block;
+  margin-top: 6px;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  color: var(--red-deep);
+  background: rgba(191, 44, 34, 0.08);
+  border: 1px solid rgba(191, 44, 34, 0.25);
+  padding: 1px 5px;
+}
+.action-btn.special { grid-column: 1 / -1; }
+.action-btn.special { background: #fbf3e2; border-color: var(--red); }
+.action-btn.special .action-name { color: var(--red); }
+.action-btn.special::after {
+  content: "限本周";
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  font-size: 9px;
+  color: #fff;
+  background: var(--red);
+  padding: 1px 5px;
+  letter-spacing: 0.1em;
+}
+
+.week-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px 14px;
+  margin-top: 4px;
+  border-top: 1px dashed rgba(23, 19, 14, 0.25);
+  flex-wrap: wrap;
+}
+.week-hint { font-size: 11px; color: var(--muted); line-height: 1.6; }
+.week-hint b { color: var(--red); }
+.week-hint .done-tag {
+  display: inline-block;
+  color: #2f6b4f;
+  border: 1px solid rgba(47, 107, 79, 0.5);
+  padding: 1px 6px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+
+/* 战报 */
+.log { list-style: none; margin: 0; padding: 8px 14px 12px; max-height: 240px; overflow-y: auto; flex: 1; }
+.log li {
+  display: flex;
+  gap: 8px;
+  padding: 5px 0;
+  border-bottom: 1px dashed rgba(23, 19, 14, 0.14);
+  font-size: 12px;
+  line-height: 1.55;
+}
+.log li:last-child { border-bottom: none; }
+.log-week {
+  flex: none;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--muted);
+  border: 1px solid rgba(23, 19, 14, 0.25);
+  height: 16px;
+  padding: 0 3px;
+  margin-top: 2px;
+}
+.log-win .log-text { color: #2f6b4f; }
+.log-lose .log-text { color: var(--red-deep); }
+.log-event .log-text { font-weight: 600; }
+.log-empty { color: var(--muted); font-size: 12px; padding: 10px 0; }
+
+/* 积分榜 */
+.rank-me {
+  margin: 12px 14px 4px;
+  border: 1.5px solid var(--red);
+  background: rgba(191, 44, 34, 0.06);
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.rank-me-num { font-family: var(--mono); font-size: 22px; font-weight: 700; color: var(--red); min-width: 52px; }
+.rank-me-meta { flex: 1; min-width: 0; }
+.rank-me-title { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; }
+.rank-me-sub { font-size: 10px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
+
+.rank-list { list-style: none; margin: 0; padding: 8px 14px 14px; }
+.rank-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  font-size: 12px;
+  border-bottom: 1px dashed rgba(23, 19, 14, 0.12);
+}
+.rank-row:last-child { border-bottom: none; }
+.rank-no { font-family: var(--mono); font-size: 10px; color: var(--muted); width: 20px; flex: none; text-align: right; }
+.rank-row.top .rank-no { color: var(--red); font-weight: 700; }
+.rank-avatar { width: 24px; height: 29px; border: 1px solid rgba(23, 19, 14, 0.5); flex: none; overflow: hidden; background: #ddd; }
+.rank-avatar svg { display: block; width: 100%; height: 100%; }
+.rank-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rank-name i { font-style: normal; font-size: 9px; color: var(--muted); margin-left: 4px; }
+.rank-pts { font-family: var(--mono); font-size: 11.5px; font-variant-numeric: tabular-nums; }
+.rank-row.me { background: rgba(191, 44, 34, 0.1); margin: 0 -6px; padding: 5px 6px; }
+.rank-row.me .rank-name { color: var(--red); font-weight: 700; }
+.rank-gap { text-align: center; color: var(--muted); font-size: 10px; letter-spacing: 0.2em; padding: 2px 0; }
+
+/* 小卖部 */
+.shop-list { padding: 6px 14px 14px; display: flex; flex-direction: column; }
+.shop-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px dashed rgba(23, 19, 14, 0.16);
+}
+.shop-item:last-child { border-bottom: none; }
+.shop-meta { flex: 1; min-width: 0; }
+.shop-name { font-size: 12.5px; font-weight: 600; letter-spacing: 0.04em; }
+.shop-name .shop-tag {
+  font-size: 9px;
+  color: var(--muted);
+  border: 1px solid rgba(23, 19, 14, 0.25);
+  padding: 0 3px;
+  margin-left: 4px;
+  font-weight: 400;
+}
+.shop-desc { font-size: 10.5px; color: var(--muted); line-height: 1.45; margin-top: 2px; }
+.shop-price { font-family: var(--mono); font-size: 12px; color: var(--red-deep); white-space: nowrap; }
+.shop-item.sold { opacity: 0.4; }
+.shop-empty { font-size: 11px; color: var(--muted); padding: 10px 0; }
+
+/* ---------------- 遮罩与弹窗 ---------------- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+.overlay[hidden] { display: none; }
+.overlay-bg {
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 15, 9, 0.66);
+  backdrop-filter: blur(2px);
+  animation: fade 0.2s ease both;
+}
+.modal {
+  position: relative;
+  width: min(860px, 100%);
+  max-height: min(92vh, 900px);
+  overflow-y: auto;
+  background: var(--paper-2);
+  border: 2.5px solid var(--line);
+  box-shadow: 14px 14px 0 rgba(0, 0, 0, 0.75);
+  animation: rise 0.28s cubic-bezier(.2, .9, .25, 1) both;
+}
+.modal.wide { width: min(980px, 100%); }
+.modal.narrow { width: min(560px, 100%); }
+
+.modal-head {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 18px;
+  background: var(--ink);
+  color: var(--paper);
+}
+.modal-title { font-family: var(--serif); font-size: 17px; letter-spacing: 0.1em; }
+.modal-sub { font-family: var(--mono); font-size: 9px; letter-spacing: 0.16em; color: #c9bfa9; }
+.modal-close {
+  background: transparent;
+  border: 1px solid rgba(241, 234, 217, 0.5);
+  color: var(--paper);
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  line-height: 1;
+  font-size: 14px;
+}
+.modal-close:hover { background: var(--red); border-color: var(--red); }
+.modal-body { padding: 18px 20px 22px; }
+.modal-foot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 14px 20px;
+  border-top: 1px dashed rgba(23, 19, 14, 0.3);
+  flex-wrap: wrap;
+}
+
+/* 公告正文 */
+.doc h3 {
+  font-family: var(--serif);
+  font-size: 22px;
+  text-align: center;
+  margin: 4px 0 6px;
+  letter-spacing: 0.12em;
+}
+.doc .doc-sub { text-align: center; font-size: 10px; letter-spacing: 0.2em; color: var(--muted); font-family: var(--mono); }
+.doc .rule { border: 1px dashed rgba(23, 19, 14, 0.3); border-width: 1px 0 0; margin: 16px 0; }
+.doc p { font-size: 13.5px; line-height: 1.85; margin: 10px 0; color: var(--ink-2); }
+.doc ol { padding-left: 20px; font-size: 13px; line-height: 1.85; }
+.doc ol li { margin: 6px 0; }
+.doc .doc-sign { text-align: right; font-size: 12px; color: var(--muted); margin-top: 20px; line-height: 1.8; }
+
+/* 选项卡片 */
+.choices { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+.choice {
+  text-align: left;
+  border: 1.5px solid var(--line);
+  background: var(--paper);
+  padding: 12px 14px;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1.6;
+  transition: background 0.12s ease, transform 0.08s ease;
+}
+.choice:hover { background: #fffdf5; transform: translateX(2px); }
+.choice b { font-family: var(--serif); font-size: 15px; letter-spacing: 0.05em; }
+.choice span { display: block; color: var(--muted); font-size: 11px; }
+.choice.danger b { color: var(--red); }
+
+/* 目标列表 */
+.target-list { display: flex; flex-direction: column; }
+.target-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 4px;
+  border-bottom: 1px dashed rgba(23, 19, 14, 0.2);
+}
+.target-row:last-child { border-bottom: none; }
+.target-portrait { width: 46px; height: 55px; border: 1.5px solid var(--line); flex: none; overflow: hidden; background: #ddd; }
+.target-portrait svg { width: 100%; height: 100%; display: block; }
+.target-meta { flex: 1; min-width: 0; }
+.target-name { font-size: 14px; font-weight: 700; letter-spacing: 0.03em; }
+.target-name .role-tag {
+  font-size: 9.5px;
+  font-weight: 400;
+  color: var(--muted);
+  border: 1px solid rgba(23, 19, 14, 0.3);
+  padding: 0 4px;
+  margin-left: 6px;
+}
+.target-bio { font-size: 11px; color: var(--muted); line-height: 1.5; margin-top: 2px; }
+.target-stats { display: flex; gap: 12px; margin-top: 4px; font-family: var(--mono); font-size: 10.5px; color: var(--ink-2); }
+.target-stats b { font-weight: 700; }
+.target-stats .warn { color: var(--red); }
+.target-act { flex: none; text-align: right; }
+.target-gain { font-family: var(--mono); font-size: 10px; color: var(--red-deep); margin-top: 4px; }
+.target-row.is-strong { background: rgba(191, 44, 34, 0.035); }
+
+/* ---------------- 决斗 ---------------- */
+.duel { padding: 0; }
+.duel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 18px;
+  border-bottom: 1.5px solid var(--line);
+  background: rgba(23, 19, 14, 0.04);
+}
+.duel-title { font-family: var(--serif); font-size: 15px; letter-spacing: 0.22em; }
+.duel-round { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.08em; }
+
+.duel-arena {
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr;
+  gap: 8px;
+  align-items: start;
+  padding: 18px 18px 8px;
+}
+.fighter { display: flex; gap: 12px; position: relative; }
+.fighter-foe { flex-direction: row-reverse; text-align: right; }
+.portrait-lg {
+  width: 92px;
+  height: 110px;
+  border: 2px solid var(--line);
+  overflow: hidden;
+  flex: none;
+  background: #ddd;
+  box-shadow: 3px 3px 0 rgba(23, 19, 14, 0.65);
+}
+.portrait-lg svg { width: 100%; height: 100%; display: block; }
+.fighter-meta { flex: 1; min-width: 0; padding-top: 4px; }
+.fighter-name {
+  font-family: var(--serif);
+  font-size: 21px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+.fighter-tag {
+  font-family: var(--sans);
+  font-size: 9px;
+  font-weight: 400;
+  color: var(--muted);
+  border: 1px solid rgba(23, 19, 14, 0.3);
+  padding: 1px 4px;
+  vertical-align: 2px;
+  margin-left: 4px;
+}
+.fighter-power { font-family: var(--mono); font-size: 10.5px; color: var(--muted); margin: 2px 0 8px; }
+.hp { display: flex; flex-direction: column; gap: 3px; }
+.fighter-foe .hp { align-items: flex-end; }
+.hp-bar {
+  width: 100%;
+  height: 13px;
+  border: 1.5px solid var(--line);
+  background: rgba(23, 19, 14, 0.08);
+  overflow: hidden;
+}
+.hp-fill {
+  display: block;
+  height: 100%;
+  background: var(--ink);
+  width: 100%;
+  transition: width 0.35s cubic-bezier(.2, .8, .3, 1);
+  background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.14) 0 4px, transparent 4px 8px);
+}
+.hp-fill.foe { background-color: var(--red); }
+.hp-fill.low { background-color: var(--red-deep); }
+.hp-text { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+
+.duel-vs {
+  font-family: var(--serif);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--red);
+  text-align: center;
+  padding-top: 38px;
+  letter-spacing: 0.06em;
+  transform: rotate(-6deg);
+}
+
+.duel-log {
+  margin: 8px 18px 0;
+  border: 1px solid rgba(23, 19, 14, 0.35);
+  background: rgba(23, 19, 14, 0.035);
+  min-height: 78px;
+  max-height: 96px;
+  overflow-y: auto;
+  padding: 8px 12px;
+}
+.duel-line { font-size: 12px; line-height: 1.65; color: var(--ink-2); }
+.duel-line.round { color: var(--ink); font-weight: 600; }
+.duel-line.sys { color: var(--muted); }
+.duel-line.support { color: var(--gold); }
+.duel-line + .duel-line { border-top: 1px dashed rgba(23, 19, 14, 0.12); padding-top: 4px; margin-top: 4px; }
+
+.duel-moves {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  padding: 14px 18px 4px;
+}
+.move-btn {
+  position: relative;
+  border: 1.5px solid var(--line);
+  background: var(--paper);
+  padding: 12px 10px 10px;
+  cursor: pointer;
+  text-align: left;
+  box-shadow: 3px 3px 0 rgba(23, 19, 14, 0.8);
+  transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.15s ease;
+  min-height: 92px;
+}
+.move-btn:hover:not(:disabled) { background: #fffdf5; transform: translate(-1px, -1px); box-shadow: 4px 4px 0 rgba(23, 19, 14, 0.9); }
+.move-btn:active:not(:disabled) { transform: translate(2px, 2px); box-shadow: 1px 1px 0 rgba(23, 19, 14, 0.8); }
+.move-btn:disabled { opacity: 0.4; cursor: default; }
+.move-btn.picked { background: var(--ink); color: var(--paper); }
+.move-btn.picked .move-desc { color: rgba(241, 234, 217, 0.7); }
+.move-key {
+  position: absolute;
+  right: 6px;
+  top: 5px;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--muted);
+  border: 1px solid rgba(23, 19, 14, 0.3);
+  padding: 0 3px;
+}
+.move-icon {
+  display: block;
+  font-family: var(--serif);
+  font-size: 24px;
+  line-height: 1;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.move-name { display: block; font-family: var(--serif); font-size: 16px; font-weight: 700; letter-spacing: 0.08em; }
+.move-desc { display: block; font-size: 10px; color: var(--muted); line-height: 1.45; margin-top: 3px; }
+.move-btn.move-support { background: #fbf3e2; }
+.move-btn.move-support .move-icon { color: var(--gold); }
+
+.duel-tip { padding: 2px 18px 14px; font-size: 10px; color: var(--muted); letter-spacing: 0.04em; }
+
+.dmg-float {
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  transform: translateX(-50%);
+  font-family: var(--serif);
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--red);
+  text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.6);
+  animation: floatUp 0.9s ease-out forwards;
+  pointer-events: none;
+  z-index: 6;
+}
+.dmg-float.big { font-size: 46px; color: #8d1a12; }
+
+.shake { animation: shake 0.36s cubic-bezier(.36, .07, .19, .97) both; }
+
+.duel-result {
+  margin: 10px 18px 18px;
+  border: 2px solid var(--line);
+  background: var(--paper);
+  padding: 18px;
+  text-align: center;
+  position: relative;
+  animation: rise 0.3s ease both;
+}
+.result-stamp {
+  position: absolute;
+  right: 18px;
+  top: 8px;
+  font-family: var(--serif);
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--red);
+  border: 5px double var(--red);
+  padding: 2px 12px;
+  transform: rotate(-12deg);
+  opacity: 0.85;
+  animation: stampIn 0.4s cubic-bezier(.2, 1.6, .4, 1) both;
+}
+.result-stamp.lose { color: var(--ink-2); border-color: var(--ink-2); }
+.result-text { font-family: var(--serif); font-size: 16px; line-height: 1.8; margin: 10px 90px 16px 0; text-align: left; }
+
+/* ---------------- 通报 / 结算 ---------------- */
+.report { padding: 6px 4px; }
+.report-head {
+  text-align: center;
+  border-bottom: 3px double var(--line);
+  padding-bottom: 10px;
+  margin-bottom: 14px;
+}
+.report-head h3 { font-family: var(--serif); font-size: 26px; letter-spacing: 0.24em; margin: 0 0 4px; }
+.report-head .no { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.18em; color: var(--muted); }
+.report-body { font-size: 13px; line-height: 1.9; color: var(--ink-2); }
+.report-body p { margin: 8px 0; }
+.report-body .hl { color: var(--red); font-weight: 700; }
+.report-body .gain { color: #2f6b4f; font-weight: 700; }
+.report-body .loss { color: var(--red); font-weight: 700; }
+.report-sign {
+  margin-top: 18px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(23, 19, 14, 0.3);
+  text-align: right;
+  font-size: 11.5px;
+  color: var(--muted);
+  line-height: 1.9;
+}
+.report-sign .seal {
+  display: inline-block;
+  color: var(--red);
+  border: 2px solid var(--red);
+  padding: 2px 8px;
+  transform: rotate(-6deg);
+  font-family: var(--serif);
+  letter-spacing: 0.1em;
+  margin-top: 6px;
+}
+
+.ev-list { display: flex; flex-direction: column; gap: 8px; margin: 10px 0; }
+.ev {
+  border-left: 3px solid var(--line);
+  padding: 6px 0 6px 12px;
+  font-size: 12.5px;
+  line-height: 1.7;
+}
+.ev .ev-title { font-weight: 700; font-family: var(--serif); letter-spacing: 0.06em; }
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 14px 0;
+}
+.stat-box {
+  border: 1.5px solid var(--line);
+  padding: 10px;
+  text-align: center;
+  background: var(--paper);
+}
+.stat-box .k { font-size: 9.5px; letter-spacing: 0.14em; color: var(--muted); }
+.stat-box .v { font-family: var(--mono); font-size: 22px; font-weight: 700; margin-top: 2px; }
+.stat-box .v.red { color: var(--red); }
+
+/* ---------------- 结局 ---------------- */
+#screen-ending { align-items: center; justify-content: center; padding: 24px; overflow-y: auto; }
+.ending-sheet {
+  width: min(780px, 100%);
+  background: var(--paper-2);
+  border: 3px solid var(--line);
+  box-shadow: 16px 16px 0 rgba(23, 19, 14, 0.9);
+  padding: clamp(26px, 5vw, 52px);
+  position: relative;
+  animation: rise 0.5s ease both;
+  margin: auto;
+}
+.ending-sheet .end-kicker { font-family: var(--mono); font-size: 10px; letter-spacing: 0.3em; color: var(--muted); }
+.ending-sheet h2 { font-family: var(--serif); font-size: clamp(34px, 6vw, 56px); margin: 8px 0 6px; letter-spacing: 0.06em; line-height: 1.1; }
+.ending-sheet .end-sub { font-family: var(--serif); font-size: 16px; color: var(--red); letter-spacing: 0.18em; margin-bottom: 20px; }
+.ending-sheet .end-story { font-size: 13.5px; line-height: 2; color: var(--ink-2); }
+.ending-sheet .end-story p { margin: 10px 0; }
+.end-stamp {
+  position: absolute;
+  right: clamp(20px, 5vw, 50px);
+  top: clamp(20px, 5vw, 46px);
+  font-family: var(--serif);
+  font-size: clamp(30px, 5vw, 44px);
+  color: var(--red);
+  border: 4px double var(--red);
+  padding: 6px 12px;
+  transform: rotate(-12deg);
+  letter-spacing: 0.2em;
+  opacity: 0.9;
+}
+.end-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1.5px solid var(--line);
+  margin: 22px 0 18px;
+}
+.end-stat { background: var(--paper); padding: 10px 8px; text-align: center; }
+.end-stat .k { font-size: 9px; letter-spacing: 0.12em; color: var(--muted); }
+.end-stat .v { font-family: var(--mono); font-size: 19px; font-weight: 700; }
+.end-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+
+/* ---------------- 提示条 ---------------- */
+.toasts {
+  position: fixed;
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%);
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+  width: min(560px, 92vw);
+}
+.toast {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 9px 16px;
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  border: 1px solid #3a3326;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.35);
+  animation: toastIn 0.25s ease both;
+  max-width: 100%;
+}
+.toast.out { animation: toastOut 0.3s ease forwards; }
+.toast b { color: #e8b23a; }
+
+/* ---------------- 动画 ---------------- */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px) scale(0.99); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pop { 0% { transform: scale(1); } 40% { transform: scale(1.18); } 100% { transform: scale(1); } }
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(191, 44, 34, 0.4); }
+  50% { box-shadow: 0 0 0 5px rgba(191, 44, 34, 0); }
+}
+@keyframes floatUp {
+  from { opacity: 0; transform: translate(-50%, 12px) scale(0.8); }
+  25% { opacity: 1; transform: translate(-50%, 0) scale(1.1); }
+  to { opacity: 0; transform: translate(-50%, -46px) scale(1); }
+}
+@keyframes shake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-4px); }
+  40%, 60% { transform: translateX(4px); }
+}
+@keyframes stampIn {
+  from { opacity: 0; transform: rotate(-12deg) scale(2.4); }
+  to { opacity: 0.85; transform: rotate(-12deg) scale(1); }
+}
+@keyframes toastIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes toastOut { to { opacity: 0; transform: translateY(-8px); } }
+
+/* ---------------- 响应式 ---------------- */
+@media (max-width: 1020px) {
+  .board { grid-template-columns: minmax(0, 1fr); }
+  .col-side { flex-direction: row; flex-wrap: wrap; }
+  .col-side .panel { flex: 1 1 300px; }
+}
+@media (max-width: 720px) {
+  .topbar { gap: 10px; }
+  .brand-name { font-size: 15px; }
+  .hud { gap: 10px 16px; }
+  .hud-v { font-size: 14px; }
+  .actions { grid-template-columns: 1fr; }
+  .duel-arena { grid-template-columns: 1fr; gap: 14px; }
+  .fighter-foe { flex-direction: row; text-align: left; }
+  .duel-vs { padding: 0; transform: none; font-size: 18px; }
+  .fighter-foe .hp { align-items: stretch; }
+  .duel-moves { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .portrait-lg { width: 72px; height: 88px; }
+  .result-text { margin-right: 0; padding-top: 54px; }
+  .result-stamp { font-size: 44px; }
+  .end-stats { grid-template-columns: repeat(2, 1fr); }
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .title-stamp { display: none; }
+  .week-cell { height: 22px; font-size: 8px; }
+  .week-cell.now::after { content: ""; }
+}
+@media (max-width: 460px) {
+  .modal-body { padding: 14px; }
+  .duel-arena { padding: 12px; }
+  .duel-log { margin: 6px 12px 0; }
+  .duel-moves { padding: 12px; gap: 8px; }
+  .move-btn { min-height: 84px; padding: 10px 8px 8px; }
+  .move-icon { font-size: 20px; }
+  .move-name { font-size: 14px; }
+  .move-desc { display: none; }
+  .fighter-name { font-size: 17px; }
+}
+
+/* ---------------- 顶栏工具与补充 ---------------- */
+.hud-tools { display: flex; align-items: center; gap: 6px; flex: none; }
+.hud-tools .btn { font-family: var(--mono); letter-spacing: 0.04em; }
+.hud-tools .btn:disabled { opacity: 0.6; }
+
+.target-act .btn { min-width: 60px; }
+.duel-result > .btn { margin-top: 14px; }
+.duel-result .stat-grid { margin-top: 4px; }
+.report .modal-foot { padding: 14px 0 0; border-top: 1px dashed rgba(23, 19, 14, 0.3); margin-top: 14px; }
+
+/* 减弱动效 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+
+
+
+
+
+
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<div id="app">
+
+  <!-- ============ 标题页 ============ -->
+  <section id="screen-title" class="screen is-active">
+    <div class="title-wrap">
+      <div class="title-head">
+        <div class="crest">实</div>
+        <div class="title-meta">
+          <span>校务会备案号：瞎编的</span>
+          <span>校园打 App v1.0.0</span>
+        </div>
+      </div>
+
+      <h1>实力至上<br />主义校园</h1>
+      <p class="title-sub">The Campus of Ability Supremacy</p>
+
+      <div class="title-quote">
+        「战斗对身体的锻炼效率，是跑步的 1.8 倍。」
+        <cite>—— 某不愿透露姓名的帖子</cite>
+      </div>
+
+      <div class="title-actions">
+        <button class="btn btn-primary btn-lg" id="btn-start">办理入学</button>
+        <button class="btn btn-ghost" id="btn-howto">查阅校规</button>
+      </div>
+
+      <div class="title-stamp">绝密 · 校内发行</div>
+
+      <div class="title-foot">
+        本作是依据 B 站视频《欢迎来到实力至上主义校园》改编的讽刺向网页游戏。<br />
+        原作：<a class="foot-link" href="https://www.bilibili.com/video/BV1nx4n6cEst/" target="_blank" rel="noopener">b23.tv/HYUJMZj</a>（UP 主 阿玉老贼）。<br />
+        与任何真实学校、真实 App 以及达尔文先生无关。
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 游戏页 ============ -->
+  <section id="screen-game" class="screen">
+    <header class="topbar">
+      <div class="brand">
+        <div class="crest crest-sm">实</div>
+        <div>
+          <div class="brand-name">实力至上主义校园</div>
+          <div class="brand-sub">校园打 App · 学生端</div>
+        </div>
+      </div>
+
+      <div class="hud">
+        <div class="hud-item"><span class="hud-k">周次</span><span class="hud-v" id="hud-week">1 / 12</span></div>
+        <div class="hud-item"><span class="hud-k">积分</span><span class="hud-v num" id="hud-points">1000</span></div>
+        <div class="hud-item"><span class="hud-k">排名</span><span class="hud-v num" id="hud-rank">#241</span></div>
+        <div class="hud-item"><span class="hud-k">等级</span><span class="hud-v" id="hud-tier">D</span></div>
+        <div class="hud-item"><span class="hud-k">战力</span><span class="hud-v num" id="hud-power">20</span></div>
+        <div class="hud-item"><span class="hud-k">体力</span><span class="hud-v num" id="hud-stamina">100<span class="dim">/100</span></span></div>
+      </div>
+
+      <div class="hud-tools">
+        <button class="btn btn-sm btn-ghost" id="btn-rules" title="查阅校规">校规</button>
+        <button class="btn btn-sm btn-ghost" id="btn-sound" title="开关音效">♪</button>
+      </div>
+    </header>
+
+    <div class="ticker">
+      <span class="ticker-label">校内通知</span>
+      <span class="ticker-text" id="ticker-text">校务会通知：本学期「校园跑」正式调整为「校园打」。</span>
+    </div>
+
+    <main class="board">
+      <div class="col col-main">
+
+        <section class="panel week-panel">
+          <div class="panel-head">
+            <h2>本周行动</h2>
+            <span class="panel-tag" id="week-tag">第 1 周 / 12</span>
+          </div>
+
+          <div class="week-strip" id="week-strip"></div>
+
+          <div class="ap-row">
+            <div class="ap-pips" id="ap-pips"></div>
+            <span class="ap-text" id="ap-text">行动力 3 / 3</span>
+          </div>
+
+          <div class="actions" id="actions"></div>
+
+          <div class="week-foot">
+            <div class="week-hint" id="week-hint"></div>
+            <button class="btn btn-primary" id="btn-endweek">提交本周 →</button>
+          </div>
+        </section>
+
+        <section class="panel log-panel">
+          <div class="panel-head">
+            <h2>战报</h2>
+            <span class="panel-tag">实时</span>
+          </div>
+          <ul class="log" id="log"></ul>
+        </section>
+
+      </div>
+
+      <aside class="col col-side">
+
+        <section class="panel rank-panel">
+          <div class="panel-head">
+            <h2>校园积分榜</h2>
+            <span class="panel-tag">480 人</span>
+          </div>
+          <div class="rank-me" id="rank-me"></div>
+          <ol class="rank-list" id="rank-list"></ol>
+        </section>
+
+        <section class="panel shop-panel">
+          <div class="panel-head">
+            <h2>小卖部</h2>
+            <span class="panel-tag">积分交易 · 每周上新</span>
+          </div>
+          <div class="shop-list" id="shop-list"></div>
+        </section>
+
+      </aside>
+    </main>
+  </section>
+
+  <!-- ============ 结局页 ============ -->
+  <section id="screen-ending" class="screen"></section>
+
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+
+  <div id="overlay" class="overlay" hidden>
+    <div class="overlay-bg" data-close="1"></div>
+    <div class="modal" id="modal" role="dialog" aria-modal="true"></div>
+  </div>
+
+</div>
+
+<script>
+﻿/* =========================================================
+   《实力至上主义校园》 · 数据层
+   规则来源：B站 @阿玉老贼 《欢迎来到实力至上主义校园》
+   ========================================================= */
+(function () {
+  'use strict';
+
+  /* ---------- 头像：程序化生成「证件照」 ---------- */
+  function hashStr(s) {
+    var h = 2166136261;
+    for (var i = 0; i < s.length; i++) {
+      h ^= s.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return h >>> 0;
+  }
+
+  function portrait(seed, opts) {
+    opts = opts || {};
+    var h = hashStr(String(seed) + (opts.gender || ''));
+    function pick(arr, shift) { return arr[(h >>> shift) % arr.length]; }
+    var skin = pick(['#f3cba7', '#e9ba90', '#f6d4b5', '#dfa97a', '#f0c49d'], 1);
+    var hair = pick(['#1b1712', '#2a2119', '#3b2c1e', '#171a1f', '#4a3524'], 2);
+    var bg = pick(['#dbe3e6', '#e8dfcd', '#d9d2c1', '#cfd8cf', '#e6d3cd', '#d5dbe8'], 3);
+    var style = (h >>> 4) % 5;
+    var gender = opts.gender || ((h >>> 6) % 2 ? 'f' : 'm');
+    var glasses = (h >>> 9) % 5 === 0;
+    var collar = pick(['#22262e', '#2b3340', '#3a3f3a', '#4a3b33'], 5);
+
+    var backHair = '';
+    if (style === 4 || (gender === 'f' && style === 1)) {
+      backHair = '<path d="M21 48c0-19 13-31 29-31s29 12 29 31v46c-4 5-11 5-14 0V50H35v44c-3 5-10 5-14 0z" fill="' + hair + '"/>';
+    }
+
+    var hairs = [
+      /* 0 寸头 */ '<path d="M26 50c0-16 10-26 24-26s24 10 24 26c-4-9-12-14-24-14s-20 5-24 14z" fill="' + hair + '"/>',
+      /* 1 中分 */ '<path d="M25 52c-1-19 10-30 25-30s26 11 25 30c-5-11-11-16-25-16-10 0-19 5-25 16z" fill="' + hair + '"/><path d="M50 24c-3 7-4 14-3 22" stroke="#00000022" stroke-width="1.2" fill="none"/>',
+      /* 2 刘海 */ '<path d="M25 53c0-20 10-31 25-31s25 11 25 31c-3-13-10-19-14-17-3 9-8 13-11 13s-8-4-11-13c-4-2-11 4-14 17z" fill="' + hair + '"/>',
+      /* 3 背头 */ '<path d="M27 48c-2-15 6-26 20-28 9-1 15 3 18 10 3 5 2 12-1 16-2-7-6-10-11-10-2-6-8-8-13-5-4 3-6 8-5 14z" fill="' + hair + '"/>',
+      /* 4 长发 */ '<path d="M24 52c0-20 11-32 26-32s26 12 26 32c-4-12-9-18-14-20-4 8-9 12-12 12s-8-4-12-12c-5 2-10 8-14 20z" fill="' + hair + '"/>'
+    ];
+
+    var glassesSVG = glasses
+      ? '<g fill="none" stroke="#2a2620" stroke-width="1.5" opacity="0.8"><rect x="32.5" y="49.5" width="14" height="11" rx="3"/><rect x="53.5" y="49.5" width="14" height="11" rx="3"/><path d="M46.5 54h7"/></g>'
+      : '';
+
+    return '<svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg" class="avatar-svg" aria-hidden="true">' +
+      '<rect width="100" height="120" fill="' + bg + '"/>' +
+      backHair +
+      '<path d="M8 120c2-24 19-33 42-33s40 9 42 33z" fill="' + collar + '"/>' +
+      '<path d="M43 78h14v14a7 7 0 0 1-14 0z" fill="' + skin + '"/>' +
+      '<path d="M43 88c4 4 10 4 14 0v6a7 7 0 0 1-14 0z" fill="#00000018"/>' +
+      '<ellipse cx="28" cy="57" rx="3.2" ry="5" fill="' + skin + '"/>' +
+      '<ellipse cx="72" cy="57" rx="3.2" ry="5" fill="' + skin + '"/>' +
+      '<path d="M50 30c13 0 22 11 22 26 0 17-10 27-22 27S28 73 28 56c0-15 9-26 22-26z" fill="' + skin + '"/>' +
+      hairs[style] +
+      '<path d="M35.5 50c2-2 4.5-2.4 7-1" stroke="#2a2119" stroke-width="1.6" fill="none" stroke-linecap="round"/>' +
+      '<path d="M64.5 50c-2-2-4.5-2.4-7-1" stroke="#2a2119" stroke-width="1.6" fill="none" stroke-linecap="round"/>' +
+      '<ellipse cx="40" cy="56.5" rx="2.5" ry="3.1" fill="#241d16"/>' +
+      '<ellipse cx="60" cy="56.5" rx="2.5" ry="3.1" fill="#241d16"/>' +
+      '<path d="M49 60.5c0 2.4 1 4 2 4" stroke="#c9967a" stroke-width="1.4" fill="none" stroke-linecap="round"/>' +
+      '<path d="M45.5 69.5c2.8 2.6 6.2 2.6 9 0" stroke="#9e5547" stroke-width="1.7" fill="none" stroke-linecap="round"/>' +
+      glassesSVG +
+      '<rect x="33" y="101" width="9" height="5" rx="1" fill="#b8302a"/>' +
+      '<path d="M33 101h9v1.4h-9z" fill="#f6e9d6" opacity=".55"/>' +
+      '</svg>';
+  }
+
+  /* ---------- 人物 ---------- */
+  var roster = [
+    {
+      name: '王大锤', role: '室友', gender: 'm', power: 14, points: 870, persona: 'rush',
+      bio: '睡你上铺。打呼噜，但人不错。'
+    },
+    {
+      name: '李静', role: '同班同学', gender: 'f', power: 18, points: 990, persona: 'wall',
+      bio: '图书馆钉子户，占座手法极其专业。'
+    },
+    {
+      name: '陈默', role: '隔壁班', gender: 'm', power: 23, points: 1130, persona: 'dirty',
+      bio: '你永远不知道他在哪，直到背后一凉。'
+    },
+    {
+      name: '张野', role: '体育特长生', gender: 'm', power: 28, points: 1270, persona: 'rush',
+      bio: '引体向上三十个，文化课三十五分。'
+    },
+    {
+      name: '赵敏敏', role: '大二学姐', gender: 'f', power: 31, points: 1430, persona: 'balanced',
+      bio: '学生会体育部长。笑得很甜，出手很重。'
+    },
+    {
+      name: '孙建国', role: '体育老师', gender: 'm', power: 37, points: 1560, persona: 'wall',
+      bio: '教篮球，也教做人。'
+    },
+    {
+      name: '钱多多', role: '富二代', gender: 'm', power: 24, points: 1790, persona: 'balanced',
+      bio: '家里有矿。雇了三个保镖，可惜都进不了校门。'
+    },
+    {
+      name: '吴德', role: '教导主任', gender: 'm', power: 39, points: 1910, persona: 'dirty',
+      bio: '查寝从来不敲门。'
+    },
+    {
+      name: '周铁柱', role: '校队队长', gender: 'm', power: 45, points: 2160, persona: 'rush',
+      bio: '铅球三连冠。据说把食堂的不锈钢餐盘捏弯过。'
+    },
+    {
+      name: '郑无极', role: '武术社社长', gender: 'm', power: 51, points: 2390, persona: 'balanced',
+      bio: '能一脚踢碎木板，也能一脚踢碎你的自尊。'
+    },
+    {
+      name: '王铁', role: '体育老师 · 篮球', gender: 'm', power: 41, points: 1680, persona: 'wall',
+      bio: '校长副本 · 第一关。'
+    },
+    {
+      name: '李钢', role: '体育老师 · 田径', gender: 'm', power: 47, points: 1740, persona: 'rush',
+      bio: '校长副本 · 第二关。'
+    },
+    {
+      name: '赵雷', role: '体育老师 · 散打', gender: 'm', power: 53, points: 1810, persona: 'dirty',
+      bio: '校长副本 · 第三关。'
+    }
+  ].map(function (n, i) {
+    n.id = 'n' + i;
+    n.named = true;
+    return n;
+  });
+
+  /* ---------- 路人学生：让积分榜看起来有 480 个人 ---------- */
+  var surnames = '赵钱孙李周吴郑王冯陈褚卫蒋沈韩杨朱秦尤许何吕施张孔曹严华金魏陶姜戚谢邹喻柏水窦章云苏潘葛奚范彭郎鲁韦昌马苗凤花方俞任袁柳'.split('');
+  var given = '伟芳娜秀英敏静丽强磊军洋勇艳杰娟涛明超秀霞平刚桂英建国志强文博欣怡子轩雨桐浩然思远嘉怡佳琪一鸣晨曦若曦宇轩梓涵'.split('');
+
+  var fillers = [];
+  (function () {
+    var used = {};
+    var seed = 7;
+    function rnd() { seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; }
+    var bios = {
+      rush: ['呼吸很重，像刚跑完三千米。', '热身比谁都认真，眼神不太对。', '开局三板斧，扛过去就好。', '据说打架前要先做二十个俯卧撑。'],
+      wall: ['站姿很稳，像一堵墙。', '双手抱胸，等你先动手。', '上个月没被人打倒过，也没打倒过谁。', '防守一流的活教材。'],
+      dirty: ['手一直插在兜里，不知道攥着什么。', '笑得很客气，眼神不太客气。', '专挑人转身的时候出手。', '鞋底有一层灰，来源不明。'],
+      balanced: ['看不出深浅。', '训练记录很平均，没有短板。', '据说是本班中游，但没人敢小看。', '不显山不露水，积分却一直在涨。']
+    };
+    var rare = [
+      '在贴吧发过《论校园打的十种流派》，被删了。',
+      '上周输给了一个体育老师，从此每天加练。',
+      '据说他只在食堂排到你前面的时候才出手。',
+      '手腕上缠着胶布，缠了三年。',
+      '传说他用一记抱摔赢过校队队长，没人信。'
+    ];
+    for (var i = 0; i < 462; i++) {
+      var name;
+      var guard = 0;
+      do {
+        name = surnames[Math.floor(rnd() * surnames.length)] + given[Math.floor(rnd() * given.length)];
+        if (rnd() > 0.72) name += given[Math.floor(rnd() * given.length)];
+        guard++;
+      } while (used[name] && guard < 40);
+      used[name] = true;
+      var r = rnd();
+      var points = Math.round(700 + Math.pow(r, 1.7) * 1250);
+      var power = Math.round(9 + Math.pow(rnd(), 1.2) * 34);
+      var personas = ['rush', 'wall', 'dirty', 'balanced', 'balanced'];
+      var persona = personas[Math.floor(rnd() * personas.length)];
+      var role = power >= 30 ? '体育生' : (r > 0.9 ? '大二学长' : '同届学生');
+      var bio = rnd() > 0.88 ? rare[i % rare.length] : bios[persona][i % 4];
+      fillers.push({
+        id: 'f' + i,
+        name: name,
+        role: role,
+        gender: rnd() > 0.5 ? 'f' : 'm',
+        power: power,
+        points: points,
+        persona: persona,
+        bio: bio,
+        named: false
+      });
+    }
+  })();
+
+  /* ---------- 决斗招式 ---------- */
+  var moves = {
+    attack: { key: 'attack', name: '猛攻', icon: '拳', desc: '正面一拳。克制阴招，被防守反制。' },
+    guard: { key: 'guard', name: '防守', icon: '盾', desc: '抱头防守并反击。克制猛攻，被阴招破防。' },
+    dirty: { key: 'dirty', name: '阴招', icon: '阴', desc: '专破防守。被猛攻抓住就惨了。' }
+  };
+
+  var personas = {
+    rush: { name: '莽夫', hint: '情报：习惯抢先手，猛攻占比极高。', weights: { attack: 0.56, guard: 0.18, dirty: 0.26 } },
+    wall: { name: '铁壁', hint: '情报：不爱进攻，喜欢防守反击。', weights: { attack: 0.18, guard: 0.57, dirty: 0.25 } },
+    dirty: { name: '老六', hint: '情报：阴招频出，专挑你看不见的角度。', weights: { attack: 0.24, guard: 0.19, dirty: 0.57 } },
+    balanced: { name: '均衡', hint: '情报：攻守均衡，暂时看不透。', weights: { attack: 0.34, guard: 0.33, dirty: 0.33 } },
+    mind: { name: '读心', hint: '情报：似乎能看穿你的套路。', weights: { attack: 0.34, guard: 0.33, dirty: 0.33 } }
+  };
+
+  /* ---------- 小卖部 ---------- */
+  var items = [
+    { id: 'meal', name: '食堂加餐券', price: 40, desc: '立刻恢复 30 点体力。', tag: '补给' },
+    { id: 'knee', name: '加厚护膝', price: 70, desc: '决斗最大生命 +20（永久）。', tag: '装备' },
+    { id: 'protein', name: '蛋白粉一桶', price: 90, desc: '战力 +6（永久）。', tag: '装备' },
+    { id: 'seat', name: '占座贴纸', price: 50, desc: '本周特训效果 +4。', tag: '消耗' },
+    { id: 'letter', name: '匿名举报信', price: 45, desc: '本周不会有人敢来挑战你。', tag: '消耗' },
+    { id: 'plaster', name: '老中医膏药', price: 60, desc: '每场决斗开局 +15 生命（永久）。', tag: '装备' },
+    { id: 'energy', name: '功能饮料', price: 35, desc: '立刻恢复 15 点体力，战力 +1。', tag: '补给' }
+  ];
+
+  /* ---------- 每周事件 ---------- */
+  var weeklyEvents = [
+    { id: 'talk', text: '辅导员找你谈话：「你这周还没打人吧？」你解释了半天，被扣了 30 积分。', apply: { points: -30 } },
+    { id: 'canteen', text: '食堂二楼新开了一个窗口，阿姨手不抖。体力 +18。', apply: { stamina: 18 } },
+    { id: 'tieba', text: '贴吧热帖《我们学校是不是有点问题》被删了，但截图传遍了全校。大家心里都有数。', apply: { points: 10 } },
+    { id: 'runapp', text: '「校园跑」App 推送：您本周已跑 0 公里。系统提示：该功能已被「校园打」取代。体力 +12。', apply: { stamina: 12 } },
+    { id: 'pe', text: '体育老师路过操场，顺手给你加了练。战力 +4。', apply: { power: 4 } },
+    { id: 'roommate', text: '室友半夜带回来一份炒粉：「明天要打架，多吃点。」体力 +22。', apply: { stamina: 22 } },
+    { id: 'donate', text: '一位不肯透露姓名的校友给「决斗基金」捐了款，你分到 60 积分。', apply: { points: 60 } },
+    { id: 'check', text: '保安查寝，没收了你床底下的两桶蛋白粉。体力 -12。', apply: { stamina: -12 } },
+    { id: 'clinic', text: '校医院搞活动，免费发膏药。下一场决斗开局 +10 生命。', apply: { flag: 'clinic' } },
+    { id: 'senior', text: '学长拍着你的肩：「打架别用蛮力，用脑子。」下周特训效果 +3。', apply: { flag: 'senior' } },
+    { id: 'fitness', text: '体测通知：全员 1000 米。你跑了，居然没死。战力 +2，体力 -8。', apply: { power: 2, stamina: -8 } },
+    { id: 'radio', text: '校长在广播里说：「物竞天择，适者生存。」你听完感觉浑身是劲。战力 +3。', apply: { power: 3 } },
+    { id: 'queue', text: '食堂排队时前面的人认出了你的排名，主动让你先打饭。体力 +10，积分 +20。', apply: { stamina: 10, points: 20 } },
+    { id: 'rumor', text: '有人在群里说你这周要挑战校队队长。你还没决定，但气势已经起来了。战力 +2。', apply: { power: 2 } }
+  ];
+
+  /* ---------- 闲逛事件 ---------- */
+  var wanderEvents = [
+    {
+      id: 'fight',
+      title: '撞见约架',
+      text: '操场角落，两个同学已经摆好了架势。其中一个回头看见你：「哥们，帮个忙？」',
+      choices: [
+        { label: '帮左边那个', side: 'a' },
+        { label: '帮右边那个', side: 'b' },
+        { label: '假装没看见', side: 'none' }
+      ]
+    },
+    {
+      id: 'card',
+      title: '捡到校园卡',
+      text: '地上有一张校园卡，余额 60 积分，照片上的人你认识——他上周刚被你打过。',
+      choices: [{ label: '刷了', side: 'use' }, { label: '交到失物招领', side: 'return' }]
+    },
+    {
+      id: 'promo',
+      title: '健身房发传单',
+      text: '一个肌肉比头还大的学长在发传单：「同学，练吗？练了才打得过别人。」',
+      choices: [{ label: '跟他练两组', side: 'train' }, { label: '拿传单垫桌脚', side: 'ignore' }]
+    },
+    {
+      id: 'watch',
+      title: '围观决斗',
+      text: '教学楼后面围了一圈人，你挤进去，正好看见一记漂亮的过肩摔。',
+      choices: [{ label: '认真偷学', side: 'learn' }, { label: '录像发群里', side: 'record' }]
+    },
+    {
+      id: 'wrong',
+      title: '认错人了',
+      text: '一个陌生同学指着你：「就是你吧？上周扫我码那个！」你确定不是你。',
+      choices: [{ label: '解释清楚', side: 'talk' }, { label: '先下手为强', side: 'hit' }]
+    }
+  ];
+
+  /* ---------- 通知栏 ---------- */
+  var notices = [
+    '校务会通知：本学期「校园跑」正式调整为「校园打」，请同学们相互转告。',
+    '本周决斗参与率 78.4%，未参与者将由系统随机匹配，请提前做好准备。',
+    '食堂二楼新增「胜者窗口」，积分前 50 名免排队。',
+    '图书馆温馨提示：座位按积分分配，请勿用书本占座，请用实力占座。',
+    '校医院提醒：决斗前请热身，决斗后请冰敷，学校不承担任何责任。',
+    '体育组通知：校长副本每学年开放一次，仅限积分第一。',
+    '「校园打」App v1.0.2 更新：修复了赢了不加分的 bug。',
+    '学工处：请各班班长组织好本周的军团战，输了扣班长分。'
+  ];
+
+  /* ---------- 结局 ---------- */
+  var boss = {
+    name: '校长',
+    role: '校长 · 最终副本',
+    power: 62,
+    persona: 'mind',
+    bio: '没人见过他出手。见过的人，都转学了。'
+  };
+
+  window.DATA = {
+    roster: roster,
+    fillers: fillers,
+    moves: moves,
+    personas: personas,
+    items: items,
+    weeklyEvents: weeklyEvents,
+    wanderEvents: wanderEvents,
+    notices: notices,
+    boss: boss,
+    bossMinions: ['王铁', '李钢', '赵雷']
+  };
+
+  window.portrait = portrait;
+  window.hashStr = hashStr;
+})();
+
+
+
+</script>
+<script>
+﻿/* =========================================================
+   《实力至上主义校园》 · 规则引擎
+   ========================================================= */
+(function () {
+  'use strict';
+
+  var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
+  var rnd = function (a, b) { return a + Math.random() * (b - a); };
+  var irnd = function (a, b) { return Math.floor(rnd(a, b + 1)); };
+
+  var TIERS = [
+    { key: 'S', max: 10, name: 'S · 校长候补', perk: '食堂免排队、图书馆有座 · 每周体力 +10 · 特训 +2' },
+    { key: 'A', max: 50, name: 'A · 优等生', perk: '食堂免排队 · 特训 +1' },
+    { key: 'B', max: 150, name: 'B · 普通学生', perk: '食堂还是要排队的' },
+    { key: 'C', max: 300, name: 'C · 边缘人', perk: '图书馆基本没座' },
+    { key: 'D', max: 9999, name: 'D · 待定', perk: '建议尽快打赢一场' }
+  ];
+
+  var Game = {
+    S: null,
+    MAX_WEEK: 12,
+
+    /* ---------------- 开局 ---------------- */
+    newGame: function () {
+      var npcs = DATA.roster.map(function (n) {
+        return {
+          id: n.id, name: n.name, role: n.role, gender: n.gender,
+          power: n.power, points: n.points, persona: n.persona,
+          bio: n.bio, named: true
+        };
+      }).concat(DATA.fillers.map(function (n) {
+        return {
+          id: n.id, name: n.name, role: n.role, gender: n.gender,
+          power: n.power, points: n.points, persona: n.persona,
+          bio: n.bio, named: false
+        };
+      }));
+
+      this.S = {
+        week: 1,
+        points: 1000,
+        power: 20,
+        stamina: 100,
+        maxStamina: 100,
+        actions: 3,
+        maxActions: 3,
+        hpBonus: 0,
+        startHpBonus: 0,
+        trainBonus: 0,
+        tempTrainBonus: 0,
+        dueled: false,
+        protected: false,
+        npcs: npcs,
+        shop: [],
+        log: [],
+        flags: { clinic: false, senior: false },
+        weekStats: { trained: 0, duels: 0, wanders: 0, classwar: false },
+        wins: 0,
+        losses: 0,
+        classWarWeeks: [5, 10],
+        classWarDone: {},
+        over: false,
+        bossCleared: false
+      };
+      this.log('办理入学手续。学号 2026' + irnd(1000, 9999) + '，初始积分 1000。', 'sys');
+      this.log('《校园打》App 已自动安装，无法卸载。', 'sys');
+      this.refreshShop();
+      return this.S;
+    },
+
+    /* ---------------- 基础查询 ---------------- */
+    rank: function () {
+      return this.rankOf(this.S.points);
+    },
+
+    rankOf: function (points) {
+      var above = 0;
+      for (var i = 0; i < this.S.npcs.length; i++) if (this.S.npcs[i].points > points) above++;
+      return above + 1;
+    },
+
+    total: function () { return this.S.npcs.length + 1; },
+
+    tier: function () {
+      var r = this.rank();
+      for (var i = 0; i < TIERS.length; i++) if (r <= TIERS[i].max) return TIERS[i];
+      return TIERS[TIERS.length - 1];
+    },
+
+    sorted: function () {
+      var arr = this.S.npcs.slice().sort(function (a, b) { return b.points - a.points; });
+      return arr;
+    },
+
+    playerRankingList: function (n) {
+      var me = { id: 'me', name: '你', role: '大一新生', gender: 'm', power: this.S.power, points: this.S.points, me: true };
+      var all = this.S.npcs.concat([me]).sort(function (a, b) { return b.points - a.points; });
+      var idx = all.indexOf(me);
+      var start = clamp(idx - Math.floor(n / 2), 0, Math.max(0, all.length - n));
+      return { list: all.slice(start, start + n), index: idx, me: me, all: all };
+    },
+
+    /* ---------------- 体力 / 积分 / 战力 ---------------- */
+    canAct: function (cost) {
+      return this.S.actions > 0 && this.S.stamina >= (cost || 0);
+    },
+
+    spend: function (actionCost, staminaCost) {
+      this.S.actions -= (actionCost || 0);
+      this.S.stamina = clamp(this.S.stamina - (staminaCost || 0), 0, this.S.maxStamina);
+    },
+
+    addPoints: function (n) {
+      this.S.points = Math.max(0, Math.round(this.S.points + n));
+    },
+
+    addPower: function (n) {
+      this.S.power = Math.max(1, Math.round(this.S.power + n));
+    },
+
+    addStamina: function (n) {
+      this.S.stamina = clamp(this.S.stamina + n, 0, this.S.maxStamina);
+    },
+
+    log: function (text, type) {
+      this.S.log.unshift({ week: this.S.week, text: text, type: type || 'info' });
+      if (this.S.log.length > 60) this.S.log.pop();
+    },
+
+    /* ---------------- 小卖部 ---------------- */
+    refreshShop: function () {
+      var pool = DATA.items.slice();
+      var picked = [];
+      while (picked.length < 3 && pool.length) {
+        picked.push(pool.splice(irnd(0, pool.length - 1), 1)[0]);
+      }
+      this.S.shop = picked.map(function (it) { return { id: it.id, sold: false }; });
+    },
+
+    shopItems: function () {
+      var self = this;
+      return this.S.shop.map(function (s) {
+        var def = DATA.items.filter(function (i) { return i.id === s.id; })[0];
+        return { def: def, sold: s.sold };
+      });
+    },
+
+    buy: function (id) {
+      var slot = this.S.shop.filter(function (s) { return s.id === id; })[0];
+      if (!slot || slot.sold) return { ok: false, msg: '已经卖完了。' };
+      var def = DATA.items.filter(function (i) { return i.id === id; })[0];
+      if (this.S.points < def.price) return { ok: false, msg: '积分不够。小卖部不赊账。' };
+      this.S.points -= def.price;
+      slot.sold = true;
+      switch (id) {
+        case 'meal': this.addStamina(30); break;
+        case 'knee': this.S.hpBonus += 20; break;
+        case 'protein': this.addPower(6); break;
+        case 'seat': this.S.tempTrainBonus += 4; break;
+        case 'letter': this.S.protected = true; break;
+        case 'plaster': this.S.startHpBonus += 15; break;
+        case 'energy': this.addStamina(15); this.addPower(1); break;
+      }
+      this.log('在小卖部买了「' + def.name + '」，花费 ' + def.price + ' 积分。', 'buy');
+      return { ok: true, msg: '买到了「' + def.name + '」。' };
+    },
+
+    /* ---------------- 训练 ---------------- */
+    train: function () {
+      this.spend(1, 22);
+      var gain = clamp(Math.round(7 - this.S.power / 16) + irnd(0, 2) + this.S.trainBonus + this.S.tempTrainBonus, 2, 12);
+      this.addPower(gain);
+      this.S.weekStats.trained++;
+      var lines = [
+        '在操场做了 100 个俯卧撑，做到第 63 个的时候开始怀疑人生，但还是做完了。',
+        '和校队的人一起练了一下午，被摔了 27 次，学会了怎么摔得好看一点。',
+        '去健身房撸铁。教练说你的动作不标准，但力量是真的。',
+        '对着沙袋练了一晚上。沙袋没说话，但你觉得它服了。',
+        '在宿舍楼道里练步伐，被宿管阿姨赶了三次，换了三个楼道。'
+      ];
+      var text = lines[irnd(0, lines.length - 1)] + '（战力 +' + gain + '）';
+      this.log(text, 'train');
+      return { power: gain, text: text };
+    },
+
+    rest: function () {
+      this.spend(1, 0);
+      var gain = 40 + irnd(0, 8);
+      this.addStamina(gain);
+      var lines = [
+        '睡了十个小时。梦里还在打，但赢了。',
+        '在宿舍躺了一天，室友说你这样下去会被淘汰。你说，明天再说。',
+        '去校医院开了点跌打损伤的药，顺便在病床上睡了一觉。',
+        '在图书馆趴着睡了一下午，醒来发现旁边有人在替你占座。'
+      ];
+      var text = lines[irnd(0, lines.length - 1)] + '（体力 +' + gain + '）';
+      this.log(text, 'rest');
+      return { stamina: gain, text: text };
+    },
+
+    /* ---------------- 决斗结算 ---------------- */
+    duelValue: function (enemy) {
+      var base = clamp(enemy.points * 0.1, 40, 200);
+      if (enemy.points > this.S.points) base *= 1.25;
+      else base *= 0.9;
+      return Math.round(base);
+    },
+
+    applyDuel: function (enemy, win) {
+      var change = 0;
+      if (win) {
+        change = this.duelValue(enemy);
+        enemy.points = Math.max(300, enemy.points - change);
+        this.addPoints(change);
+        this.addPower(1);
+        this.S.wins++;
+        this.log('决斗胜利。扫码成功，从「' + enemy.name + '」身上扫走 ' + change + ' 积分。', 'win');
+      } else {
+        change = Math.round(clamp(this.S.points * 0.07, 30, 150));
+        this.addPoints(-change);
+        enemy.points += change;
+        this.S.losses++;
+        this.log('决斗失败。对方扫走了你的码，损失 ' + change + ' 积分。', 'lose');
+      }
+      this.S.dueled = true;
+      this.S.weekStats.duels++;
+      return change;
+    },
+
+    /* ---------------- 被挑战 ---------------- */
+    pickChallenger: function () {
+      var me = this.S.points;
+      var pool = this.S.npcs.filter(function (n) {
+        return n.points > me * 0.85 && n.points < me * 1.75;
+      });
+      if (!pool.length) pool = this.S.npcs.slice();
+      pool.sort(function (a, b) { return b.points - a.points; });
+      var top = pool.slice(0, Math.max(4, Math.ceil(pool.length * 0.12)));
+      return top[irnd(0, top.length - 1)];
+    },
+
+    /* ---------------- 闲逛 ---------------- */
+    rollWander: function () {
+      var ev = DATA.wanderEvents[irnd(0, DATA.wanderEvents.length - 1)];
+      return ev;
+    },
+
+    resolveWander: function (ev, side) {
+      var self = this;
+      this.spend(1, 8);
+      this.S.weekStats.wanders++;
+      var out = { text: '', points: 0, power: 0, stamina: 0 };
+
+      if (ev.id === 'fight') {
+        if (side === 'none') {
+          out.text = '你假装系鞋带，慢慢退出了人群。身后传来一声闷响，你没回头。';
+        } else {
+          var win = Math.random() < 0.55 + (this.S.power - 26) * 0.01;
+          if (win) {
+            out.points = 90 + irnd(0, 30);
+            this.addPoints(out.points);
+            out.text = '你加入了战斗。二打一，三分钟解决。你们俩一起扫了对方的码，各分到 ' + out.points + ' 积分。';
+            this.log(out.text, 'win');
+          } else {
+            out.points = -(60 + irnd(0, 30));
+            this.addPoints(out.points);
+            out.text = '你加入了战斗。然后发现对方是校队的。你和你的临时战友一起被扫了码，损失 ' + (-out.points) + ' 积分。';
+            this.log(out.text, 'lose');
+          }
+        }
+      } else if (ev.id === 'card') {
+        if (side === 'use') {
+          out.points = 60; this.addPoints(60);
+          out.text = '你刷了卡，买了两个鸡腿。失主在群里骂了一晚上，你吃得很香。积分 +60。';
+          this.log(out.text, 'info');
+        } else {
+          out.points = 30;
+          this.addPoints(30);
+          out.text = '你把卡交到了失物招领。失主是个学姐，为了感谢你，请你吃了顿饭。积分 +30。';
+          this.log(out.text, 'info');
+        }
+      } else if (ev.id === 'promo') {
+        if (side === 'train') {
+          out.power = 3; this.addPower(3);
+          out.text = '你跟着练了两组。学长说你有天赋，你说你只是怕被打。战力 +3。';
+          this.log(out.text, 'train');
+        } else {
+          out.stamina = 10; this.addStamina(10);
+          out.text = '你把传单拿回宿舍垫了桌脚。桌子稳了，你心情也好了。体力 +10。';
+          this.log(out.text, 'rest');
+        }
+      } else if (ev.id === 'watch') {
+        if (side === 'learn') {
+          out.power = 4; this.addPower(4);
+          out.text = '你把那记过肩摔记在了本子上，回去对着室友练了三遍。战力 +4。';
+          this.log(out.text, 'train');
+        } else {
+          out.points = 25; this.addPoints(25);
+          out.text = '你录了视频发到群里，一晚上涨了 200 个赞。有人给你打赏了 25 积分。';
+          this.log(out.text, 'info');
+        }
+      } else if (ev.id === 'wrong') {
+        if (side === 'talk') {
+          out.stamina = 12; this.addStamina(12);
+          out.text = '你耐心解释了十分钟，对方发现真认错人了，请你喝了瓶水。体力 +12。';
+          this.log(out.text, 'rest');
+        } else {
+          if (Math.random() < 0.5) {
+            out.points = 70; this.addPoints(70);
+            out.text = '你先下手为强。打完之后才发现真认错人了。你赔了 70 积分医药费。';
+            this.log(out.text, 'lose');
+            out.points = -70;
+          } else {
+            out.points = 0;
+            out.text = '你先下手为强，结果对方是武术社的。你被按在地上，他确认了你不是那个人，还道了歉。';
+            this.log(out.text, 'lose');
+          }
+        }
+      }
+      return out;
+    },
+
+    /* ---------------- 军团战 ---------------- */
+    classWarInfo: function () {
+      var week = this.S.week;
+      var power = Math.round(26 + week * 2.2);
+      return {
+        enemyName: '七班班长',
+        power: power,
+        points: 900,
+        persona: week === 5 ? 'rush' : 'balanced',
+        role: '军团战 · 七班',
+        bio: '七班的头，据说一个人能打他们班三个。',
+        tactics: [
+          { id: 'front', name: '正面强攻', desc: '你的伤害 +20%，但对方也 +10%。' },
+          { id: 'flank', name: '包抄后排', desc: '对方开局少 25 点生命。' },
+          { id: 'hire', name: '摇人（80 积分）', desc: '叫两个外援，你的伤害 +35%。' }
+        ]
+      };
+    },
+
+    classWarResult: function (win, tactic) {
+      var out = { points: 0, power: 0, text: '' };
+      if (win) {
+        out.points = 140;
+        out.power = 4;
+        this.addPoints(140);
+        this.addPower(4);
+        out.text = '军团战胜利。你带着三班把七班按在了操场上，全班加分，你拿到 140 积分，战力 +4。';
+        this.log(out.text, 'win');
+      } else {
+        out.points = -110;
+        this.addPoints(-110);
+        out.text = '军团战失败。班长要负主要责任，你被扣了 110 积分。班主任在班会上看了你一眼，没说话。';
+        this.log(out.text, 'lose');
+      }
+      this.S.actions -= 1;
+      this.S.dueled = true;
+      this.S.classWarDone[this.S.week] = true;
+      this.S.weekStats.classwar = true;
+      return out;
+    },
+
+    /* ---------------- 周结算 ---------------- */
+    startWeek: function () {
+      var s = this.S;
+      s.week++;
+      s.actions = s.maxActions;
+      s.dueled = false;
+      s.protected = false;
+      s.tempTrainBonus = 0;
+      s.weekStats = { trained: 0, duels: 0, wanders: 0, classwar: false };
+      s.stamina = clamp(s.stamina + 50, 0, s.maxStamina);
+      if (this.tier().key === 'S') s.stamina = clamp(s.stamina + 10, 0, s.maxStamina);
+      // 全校积分小幅浮动
+      for (var i = 0; i < s.npcs.length; i++) {
+        var n = s.npcs[i];
+        n.points = Math.max(320, Math.round(n.points * rnd(0.96, 1.045)));
+      }
+      this.refreshShop();
+      this.log('第 ' + s.week + ' 周开始。体力恢复，App 已刷新本周名单。', 'sys');
+    },
+
+    rollWeeklyEvent: function () {
+      var ev = DATA.weeklyEvents[irnd(0, DATA.weeklyEvents.length - 1)];
+      var s = this.S;
+      var out = { text: ev.text, changes: [] };
+      var ap = ev.apply || {};
+      if (ap.points) { this.addPoints(ap.points); out.changes.push('积分 ' + (ap.points > 0 ? '+' : '') + ap.points); }
+      if (ap.stamina) { this.addStamina(ap.stamina); out.changes.push('体力 ' + (ap.stamina > 0 ? '+' : '') + ap.stamina); }
+      if (ap.power) { this.addPower(ap.power); out.changes.push('战力 +' + ap.power); }
+      if (ap.flag === 'clinic') { s.flags.clinic = true; out.changes.push('下场决斗 +10 生命'); }
+      if (ap.flag === 'senior') { s.tempTrainBonus += 3; out.changes.push('下周特训 +3'); }
+      this.log('【本周事件】' + ev.text, 'event');
+      return out;
+    },
+
+    checkClassWarPenalty: function () {
+      var s = this.S;
+      if (s.classWarWeeks.indexOf(s.week) >= 0 && !s.classWarDone[s.week]) {
+        this.addPoints(-50);
+        this.log('本周军团战缺席，班主任记了你一笔：积分 -50。', 'lose');
+        s.classWarDone[s.week] = true;
+        return '本周的军团战你没有参加。班主任在班会上点了你的名，积分 -50。';
+      }
+      return null;
+    },
+
+    /* ---------------- 结局判定 ---------------- */
+    finalRank: function () { return this.rank(); },
+
+    isBossAvailable: function () {
+      return this.S.week > this.MAX_WEEK && this.rank() === 1 && !this.S.bossCleared;
+    },
+
+    bossLineup: function () {
+      var self = this;
+      var minions = DATA.bossMinions.map(function (name) {
+        return self.S.npcs.filter(function (n) { return n.name === name; })[0];
+      }).filter(Boolean);
+      var principal = {
+        id: 'boss',
+        name: DATA.boss.name,
+        role: DATA.boss.role,
+        gender: 'm',
+        power: DATA.boss.power,
+        points: 0,
+        persona: DATA.boss.persona,
+        bio: DATA.boss.bio,
+        boss: true
+      };
+      return minions.concat([principal]);
+    }
+  };
+
+  window.Game = Game;
+})();
+
+
+</script>
+<script>
+/* =========================================================
+   《实力至上主义校园》 · 决斗
+   三招相克：猛攻 > 阴招 > 防守 > 猛攻
+   ========================================================= */
+(function () {
+  'use strict';
+
+  var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
+  var irnd = function (a, b) { return Math.floor(a + Math.random() * (b - a + 1)); };
+
+  var MOVE_NAMES = { attack: '猛攻', guard: '防守', dirty: '阴招', support: '叫兄弟' };
+  var COUNTER = { attack: 'guard', guard: 'dirty', dirty: 'attack' };
+
+  function baseDamage(power) {
+    return 9 + power * 0.6 + Math.random() * 4;
+  }
+
+  function weightedMove(weights) {
+    var r = Math.random();
+    if (r < weights.attack) return 'attack';
+    if (r < weights.attack + weights.guard) return 'guard';
+    return 'dirty';
+  }
+
+  var Battle = {
+    B: null,
+
+    mount: function (el, cfg) {
+      var S = Game.S;
+      var hpBonus = S.hpBonus + S.startHpBonus + (S.flags.clinic ? 10 : 0);
+      if (S.flags.clinic) S.flags.clinic = false;
+
+      var enemyPower = cfg.enemy.power;
+      var playerMax = Math.round(90 + S.power * 1.2 + hpBonus);
+      var enemyMax = Math.round(90 + enemyPower * 1.2 + (cfg.enemy.boss ? 45 : 0) + (cfg.enemyHp || 0));
+
+      this.B = {
+        el: el,
+        cfg: cfg,
+        player: { name: '你', power: S.power, hp: playerMax, max: playerMax, isPlayer: true },
+        enemy: { name: cfg.enemy.name, power: enemyPower, hp: enemyMax, max: enemyMax, enemy: cfg.enemy },
+        mods: cfg.mods || {},
+        round: 1,
+        locked: false,
+        over: false,
+        supportUsed: false,
+        lastPlayerMove: null,
+        log: []
+      };
+
+      var intel = (DATA.personas[cfg.enemy.persona] || DATA.personas.balanced).hint;
+      this.B.log.push({ t: 'sys', text: cfg.mode === 'boss' ? '最终副本开始。' : '决斗开始。' });
+      if (cfg.mode === 'classwar') this.B.log.push({ t: 'sys', text: '军团战：三班 VS 七班。全班都在看着你。' });
+      this.B.log.push({ t: 'sys', text: intel });
+
+      this.render();
+      this.bindMoves();
+      return this.B;
+    },
+
+    /* ---------------- 渲染 ---------------- */
+    render: function () {
+      var B = this.B;
+      var e = B.enemy.enemy;
+      var self = this;
+      var myHpPct = clamp(B.player.hp / B.player.max, 0, 1) * 100;
+      var foeHpPct = clamp(B.enemy.hp / B.enemy.max, 0, 1) * 100;
+
+      B.el.innerHTML =
+        '<div class="duel-head">' +
+        '<span class="duel-title">' + (B.cfg.mode === 'boss' ? '校长副本' : B.cfg.mode === 'classwar' ? '军团战' : '决斗') + '</span>' +
+        '<span class="duel-round">第 <b id="duel-round">' + B.round + '</b> 回合</span>' +
+        '</div>' +
+        '<div class="duel-arena">' +
+        '<div class="fighter fighter-you" id="fighter-you">' +
+        '<div class="fighter-portrait portrait-lg">' + window.portrait('player-2026', { gender: 'm' }) + '</div>' +
+        '<div class="fighter-meta">' +
+        '<div class="fighter-name">你 <span class="fighter-tag">大一新生</span></div>' +
+        '<div class="fighter-power">战力 ' + B.player.power + '</div>' +
+        '<div class="hp"><div class="hp-bar"><i class="hp-fill" id="hp-you-fill" style="width:' + myHpPct + '%"></i></div>' +
+        '<span class="hp-text" id="hp-you-text">' + B.player.hp + ' / ' + B.player.max + '</span></div>' +
+        '</div></div>' +
+        '<div class="duel-vs">VS</div>' +
+        '<div class="fighter fighter-foe" id="fighter-foe">' +
+        '<div class="fighter-portrait portrait-lg">' + window.portrait(e.name + e.role, { gender: e.gender }) + '</div>' +
+        '<div class="fighter-meta">' +
+        '<div class="fighter-name">' + e.name + ' <span class="fighter-tag">' + e.role + '</span></div>' +
+        '<div class="fighter-power">战力 ' + B.enemy.power + '</div>' +
+        '<div class="hp"><div class="hp-bar"><i class="hp-fill foe" id="hp-foe-fill" style="width:' + foeHpPct + '%"></i></div>' +
+        '<span class="hp-text" id="hp-foe-text">' + B.enemy.hp + ' / ' + B.enemy.max + '</span></div>' +
+        '</div></div>' +
+        '</div>' +
+        '<div class="duel-log" id="duel-log"></div>' +
+        '<div class="duel-moves" id="duel-moves"></div>' +
+        '<div class="duel-tip">出招会被对方看见，但看不见对方出什么。选吧。</div>';
+
+      this.renderLog();
+      this.renderMoves();
+    },
+
+    renderLog: function () {
+      var box = this.B.el.querySelector('#duel-log');
+      if (!box) return;
+      var lines = this.B.log.slice(-4);
+      box.innerHTML = lines.map(function (l) {
+        return '<div class="duel-line ' + (l.t || '') + '">' + l.text + '</div>';
+      }).join('');
+      box.scrollTop = box.scrollHeight;
+    },
+
+    renderMoves: function () {
+      var B = this.B;
+      var box = B.el.querySelector('#duel-moves');
+      if (!box) return;
+      if (B.over) { box.innerHTML = ''; return; }
+      var disabled = B.locked ? ' disabled' : '';
+      var supportDisabled = B.supportUsed || Game.S.points < 60 ? ' disabled' : '';
+      box.innerHTML = ['attack', 'guard', 'dirty'].map(function (k, i) {
+        var m = DATA.moves[k];
+        return '<button class="move-btn" data-move="' + k + '"' + disabled + '>' +
+          '<span class="move-key">' + (i + 1) + '</span>' +
+          '<span class="move-icon">' + m.icon + '</span>' +
+          '<span class="move-name">' + m.name + '</span>' +
+          '<span class="move-desc">' + m.desc + '</span>' +
+          '</button>';
+      }).join('') +
+        '<button class="move-btn move-support" data-move="support"' + (B.supportUsed ? ' disabled' : '') + supportDisabled + '>' +
+        '<span class="move-key">4</span>' +
+        '<span class="move-icon">援</span>' +
+        '<span class="move-name">叫兄弟</span>' +
+        '<span class="move-desc">花 60 积分，喊一个学长来帮忙。每场一次。</span>' +
+        '</button>';
+    },
+
+    bindMoves: function () {
+      var self = this;
+      this.B.el.addEventListener('click', function (ev) {
+        var btn = ev.target.closest('.move-btn');
+        if (!btn || btn.disabled) return;
+        self.play(btn.getAttribute('data-move'));
+      });
+      this.keyHandler = function (ev) {
+        if (self.B.over || self.B.locked) return;
+        var map = { '1': 'attack', '2': 'guard', '3': 'dirty', '4': 'support' };
+        if (map[ev.key]) self.play(map[ev.key]);
+      };
+      document.addEventListener('keydown', this.keyHandler);
+    },
+
+    destroy: function () {
+      if (this.keyHandler) document.removeEventListener('keydown', this.keyHandler);
+      this.keyHandler = null;
+    },
+
+    /* ---------------- 出招 ---------------- */
+    play: function (playerMove) {
+      var B = this.B;
+      if (B.locked || B.over) return;
+      if (playerMove === 'support' && (B.supportUsed || Game.S.points < 60)) return;
+
+      B.locked = true;
+      this.renderMoves();
+
+      var enemyMove = this.enemyChoose();
+      B.log.push({ t: 'round', text: '第 ' + B.round + ' 回合：你出「' + MOVE_NAMES[playerMove] + '」，对方出「' + MOVE_NAMES[enemyMove] + '」。' });
+
+      if (playerMove === 'support') {
+        B.supportUsed = true;
+        Game.addPoints(-60);
+        B.log.push({ t: 'support', text: '你朝场边喊了一声，一个胳膊比你腰粗的学长冲了进来，一拳砸在' + B.enemy.name + '背上。（-60 积分）' });
+        playerMove = 'support';
+      } else {
+        B.lastPlayerMove = playerMove;
+      }
+
+      var res = this.resolve(playerMove, enemyMove);
+      B.log.push({ t: 'sys', text: res.text });
+      this.renderLog();
+
+      var self = this;
+      setTimeout(function () {
+        self.applyDamage(res);
+        if (window.SFX) SFX.play(res.big ? 'big' : 'hit');
+      }, 420);
+
+      setTimeout(function () {
+        B.locked = false;
+        B.round++;
+        var r = B.el.querySelector('#duel-round');
+        if (r) r.textContent = B.round;
+        if (B.player.hp <= 0 || B.enemy.hp <= 0) {
+          self.finish();
+        } else {
+          self.renderMoves();
+          self.checkLowHp();
+        }
+      }, 1050);
+    },
+
+    enemyChoose: function () {
+      var B = this.B;
+      var persona = DATA.personas[B.cfg.enemy.persona] || DATA.personas.balanced;
+      if (B.cfg.enemy.persona === 'mind' && B.lastPlayerMove && Math.random() < 0.45) {
+        return COUNTER[B.lastPlayerMove];
+      }
+      return weightedMove(persona.weights);
+    },
+
+    resolve: function (pm, em) {
+      var B = this.B;
+      var big = false;
+      var text = '';
+      var pDmg = 0;
+      var eDmg = 0;
+      var pBase = baseDamage(B.player.power) * (B.mods.playerDmg || 1);
+      var eBase = baseDamage(B.enemy.power) * (B.mods.enemyDmg || 1);
+      var pCrit = Math.random() < 0.12;
+      var eCrit = Math.random() < 0.12;
+      if (pCrit) pBase *= 1.5;
+      if (eCrit) eBase *= 1.5;
+
+      if (pm === 'support') {
+        pDmg = 18 + irnd(0, 8);
+        eDmg = eBase * 0.5;
+        big = true;
+        text = '学长一拳打乱了对方的节奏，你趁机补上一脚。';
+      } else if (pm === em) {
+        if (pm === 'attack') { pDmg = pBase * 0.7; eDmg = eBase * 0.7; text = '两拳撞在一起，各退三步。'; }
+        else if (pm === 'guard') { pDmg = 0; eDmg = 0; text = '两个人都在等对方先动。空气突然安静。'; }
+        else { pDmg = 0; eDmg = 0; text = '你们同时使出阴招，被对方识破。场面一度十分尴尬。'; }
+      } else if (pm === 'attack' && em === 'dirty') {
+        pDmg = pBase * 1.7; eDmg = 0; big = true;
+        text = '对方伸手掏你口袋，被你一把抓住，反手就是一记重拳。';
+      } else if (pm === 'dirty' && em === 'attack') {
+        pDmg = 0; eDmg = eBase * 1.7; big = true;
+        text = '你的小动作被逮了个正着，对方一记重拳把你打退到墙角。';
+      } else if (pm === 'attack' && em === 'guard') {
+        pDmg = 0; eDmg = pBase * 0.25;
+        text = '对方抱头防守，你的拳头打在护臂上，被他反手推了一把。';
+      } else if (pm === 'guard' && em === 'attack') {
+        pDmg = eBase * 0.25; eDmg = 0;
+        text = '你抱住头硬接一拳，趁他收手时推了他一把。';
+      } else if (pm === 'dirty' && em === 'guard') {
+        pDmg = pBase * 1.05; eDmg = 0;
+        text = '对方以为你要出拳，缩成一团。你从下面踹了他小腿一脚。';
+      } else if (pm === 'guard' && em === 'dirty') {
+        pDmg = 0; eDmg = eBase * 1.05;
+        text = '你防着上面，他从下面来了一下。防不住，根本防不住。';
+      } else if (pm === 'attack' && em === 'attack') {
+        pDmg = pBase * 0.7; eDmg = eBase * 0.7;
+        text = '硬碰硬。谁的拳头硬，谁就少退一步。';
+      } else {
+        pDmg = 0; eDmg = 0;
+      }
+
+      if (pm === 'guard' && em === 'attack') {
+        // 防守反击的额外伤害
+        eDmg += (6 + B.player.power * 0.12) * (B.mods.playerDmg || 1);
+      }
+
+      pDmg = Math.round(pDmg);
+      eDmg = Math.round(eDmg);
+      if (pCrit && pDmg > 0) text += ' 暴击！';
+      if (eCrit && eDmg > 0) text += ' 对方打出了暴击。';
+      this.pending = { pDmg: pDmg, eDmg: eDmg, big: big };
+      return { pDmg: pDmg, eDmg: eDmg, text: text, big: big };
+    },
+
+    applyDamage: function (res) {
+      var B = this.B;
+      if (res.pDmg > 0) {
+        B.enemy.hp = Math.max(0, B.enemy.hp - res.pDmg);
+        this.floatText('fighter-foe', '-' + res.pDmg, res.pDmg > 25 ? 'big' : '');
+        this.shake('fighter-foe');
+      }
+      if (res.eDmg > 0) {
+        B.player.hp = Math.max(0, B.player.hp - res.eDmg);
+        this.floatText('fighter-you', '-' + res.eDmg, res.eDmg > 25 ? 'big' : '');
+        this.shake('fighter-you');
+      }
+      this.updateHp();
+    },
+
+    updateHp: function () {
+      var B = this.B;
+      var yf = B.el.querySelector('#hp-you-fill');
+      var ff = B.el.querySelector('#hp-foe-fill');
+      var yt = B.el.querySelector('#hp-you-text');
+      var ft = B.el.querySelector('#hp-foe-text');
+      if (yf) yf.style.width = (clamp(B.player.hp / B.player.max, 0, 1) * 100) + '%';
+      if (ff) ff.style.width = (clamp(B.enemy.hp / B.enemy.max, 0, 1) * 100) + '%';
+      if (yt) yt.textContent = B.player.hp + ' / ' + B.player.max;
+      if (ft) ft.textContent = B.enemy.hp + ' / ' + B.enemy.max;
+    },
+
+    floatText: function (fighterId, text, cls) {
+      var card = this.B.el.querySelector('#' + fighterId);
+      if (!card) return;
+      var span = document.createElement('span');
+      span.className = 'dmg-float ' + (cls || '');
+      span.textContent = text;
+      card.appendChild(span);
+      setTimeout(function () { span.remove(); }, 900);
+    },
+
+    shake: function (fighterId) {
+      var card = this.B.el.querySelector('#' + fighterId);
+      if (!card) return;
+      card.classList.remove('shake');
+      void card.offsetWidth;
+      card.classList.add('shake');
+    },
+
+    checkLowHp: function () {
+      var B = this.B;
+      var ePct = B.enemy.hp / B.enemy.max;
+      if (ePct < 0.35 && !B.lowhpSaid) {
+        B.lowhpSaid = true;
+        B.log.push({ t: 'sys', text: B.enemy.name + '开始喘了，脚步有点乱。' });
+        this.renderLog();
+      }
+    },
+
+    finish: function () {
+      var B = this.B;
+      B.over = true;
+      B.locked = true;
+      var win = B.enemy.hp <= 0 && B.player.hp > 0;
+      // 同归于尽判负
+      if (B.player.hp <= 0) win = false;
+      this.renderMoves();
+      this.renderLog();
+
+      var self = this;
+      setTimeout(function () {
+        self.renderResult(win);
+        if (window.SFX) SFX.play(win ? 'win' : 'lose');
+      }, 500);
+    },
+
+    renderResult: function (win) {
+      var B = this.B;
+      var box = document.createElement('div');
+      box.className = 'duel-result';
+      box.innerHTML =
+        '<div class="result-stamp ' + (win ? 'win' : 'lose') + '">' + (win ? '胜' : '负') + '</div>' +
+        '<div class="result-text">' + (win
+          ? '你赢了。' + B.enemy.name + '把手机递过来，你扫了他的码。'
+          : '你输了。' + B.enemy.name + '扫了你的码，转身走了。') + '</div>' +
+        '<button class="btn btn-solid" id="duel-continue">' + (win ? '收下积分' : '爬起来') + '</button>';
+      B.el.appendChild(box);
+      var self = this;
+      box.querySelector('#duel-continue').addEventListener('click', function () {
+        self.destroy();
+        B.cfg.onFinish({ win: win, rounds: B.round, playerHp: B.player.hp });
+      });
+    }
+  };
+
+  window.Battle = Battle;
+})();
+
+</script>
+<script>
+/* 极简音效：全部用 WebAudio 现场合成，不依赖音频文件 */
+(function () {
+  'use strict';
+
+  var ctx = null;
+  var enabled = true;
+
+  function ac() {
+    if (!ctx) {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      try { ctx = new AC(); } catch (e) { return null; }
+    }
+    if (ctx.state === 'suspended') { try { ctx.resume(); } catch (e) {} }
+    return ctx;
+  }
+
+  function tone(freq, dur, type, vol, slideTo, delay) {
+    var c = ac();
+    if (!c) return;
+    var t0 = c.currentTime + (delay || 0);
+    var o = c.createOscillator();
+    var g = c.createGain();
+    o.type = type || 'square';
+    o.frequency.setValueAtTime(freq, t0);
+    if (slideTo) o.frequency.exponentialRampToValueAtTime(Math.max(20, slideTo), t0 + dur);
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(vol || 0.05, t0 + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    o.connect(g);
+    g.connect(c.destination);
+    o.start(t0);
+    o.stop(t0 + dur + 0.02);
+  }
+
+  function noise(dur, freq, vol, delay) {
+    var c = ac();
+    if (!c) return;
+    var t0 = c.currentTime + (delay || 0);
+    var len = Math.max(1, Math.floor(c.sampleRate * dur));
+    var buf = c.createBuffer(1, len, c.sampleRate);
+    var data = buf.getChannelData(0);
+    for (var i = 0; i < len; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / len);
+    var src = c.createBufferSource();
+    src.buffer = buf;
+    var f = c.createBiquadFilter();
+    f.type = 'lowpass';
+    f.frequency.setValueAtTime(freq || 1200, t0);
+    f.frequency.exponentialRampToValueAtTime(180, t0 + dur);
+    var g = c.createGain();
+    g.gain.setValueAtTime(vol || 0.1, t0);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    src.connect(f); f.connect(g); g.connect(c.destination);
+    src.start(t0);
+  }
+
+  var SFX = {
+    toggle: function () { enabled = !enabled; if (enabled) SFX.play('click'); return enabled; },
+    isOn: function () { return enabled; },
+    play: function (name) {
+      if (!enabled) return;
+      switch (name) {
+        case 'click': tone(420, 0.05, 'square', 0.03, 300); break;
+        case 'hit': noise(0.14, 1800, 0.07); tone(120, 0.09, 'sine', 0.05, 70); break;
+        case 'big': noise(0.26, 2400, 0.12); tone(90, 0.18, 'sine', 0.08, 45); break;
+        case 'win':
+          tone(392, 0.12, 'triangle', 0.06, 392, 0);
+          tone(523, 0.12, 'triangle', 0.06, 523, 0.1);
+          tone(659, 0.22, 'triangle', 0.06, 659, 0.2);
+          break;
+        case 'lose':
+          tone(330, 0.16, 'sawtooth', 0.04, 240, 0);
+          tone(196, 0.3, 'sawtooth', 0.045, 120, 0.14);
+          break;
+        case 'coin':
+          tone(880, 0.06, 'square', 0.035, 880, 0);
+          tone(1320, 0.1, 'square', 0.03, 1320, 0.06);
+          break;
+        case 'stamp':
+          noise(0.12, 900, 0.12);
+          tone(70, 0.16, 'sine', 0.09, 45);
+          break;
+        case 'step':
+          tone(180, 0.05, 'sine', 0.03, 120);
+          break;
+      }
+    }
+  };
+
+  window.SFX = SFX;
+})();
+
+</script>
+<script>
+﻿/* =========================================================
+   《实力至上主义校园》 · 界面与流程
+   ========================================================= */
+(function () {
+  'use strict';
+
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var fmt = function (n) { return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ','); };
+  var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
+  var esc = function (s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  };
+
+  var ENDINGS = {
+    principal: {
+      kicker: 'ENDING 01 / 真结局',
+      title: '校长办公室',
+      sub: '实力至上 · 你坐上了那把椅子',
+      stamp: '通关',
+      story: [
+        '你击败了校长，以及他身后的全体体育老师。',
+        '按照校规，教师宿舍和教师办公室对你解锁。第二天，你把自己的名字贴在了校长办公室的门牌上。',
+        '没有人反对。反对的人，上周已经被扫过码了。',
+        '「校园跑」的图标从你手机上彻底消失了。你甚至有点怀念它——只是有一点。',
+        '著名科学家达尔文说过：物竞天择，适者生存。（注：达尔文不姓达。）'
+      ]
+    },
+    dorm: {
+      kicker: 'ENDING 02',
+      title: '教师宿舍 · 一间',
+      sub: '差一点，就差一点',
+      stamp: '惜败',
+      story: [
+        '你打到了最后一关，但校长还是那个校长。',
+        '校医院给你安排了一间教师宿舍，理由是「表现优异」。你躺在单人床上，看着天花板。',
+        '窗外，新一届的大一新生正在操场上互相追逐。你听见有人在喊：「扫码！」',
+        '你决定明年再来一次。'
+      ]
+    },
+    rank2: {
+      kicker: 'ENDING 03',
+      title: '准校长候补',
+      sub: '排名第 2，到第 1 名差一步',
+      stamp: '候补',
+      story: [
+        '你排在积分榜第二。按照校规，只有第一才能挑战校长。',
+        '你在校长办公室门口站了很久，最后被保安请走了。',
+        '不过你的名字已经出现在「优秀毕业生」名单上。食堂阿姨见你会多打一勺，图书馆也给你留了个座。'
+      ]
+    },
+    rank10: {
+      kicker: 'ENDING 04',
+      title: '优秀毕业生',
+      sub: 'S 级待遇，但没有副本资格',
+      stamp: '优秀',
+      story: [
+        '你稳稳地留在了积分榜前列。',
+        '食堂不用排队，图书馆永远有座，走在路上会有人主动跟你打招呼——然后绕开你。',
+        '你没有挑战校长的资格，但你已经不太需要了。'
+      ]
+    },
+    rank50: {
+      kicker: 'ENDING 05',
+      title: '顺利毕业',
+      sub: '活着，且没有欠学校钱',
+      stamp: '毕业',
+      story: [
+        '你顺利读完了大一。没有成为校长，也没有被退学。',
+        '你的校园跑记录了 0 公里，你的决斗记录是厚厚一沓。',
+        '毕业那天，辅导员拍了拍你的肩：「你是我带过最省心的学生——从来不用催你打架。」'
+      ]
+    },
+    rankrest: {
+      kicker: 'ENDING 06',
+      title: '补考通知',
+      sub: '积分不足，请于下周一到教务处报到',
+      stamp: '补考',
+      story: [
+        '你的积分排在全校中下游。',
+        '教务处给你寄了一张补考通知，科目是《体育（实战）》。',
+        '你把它折成纸飞机，从宿舍窗口扔了出去。纸飞机飞得很远，比你跑得快多了。'
+      ]
+    }
+  };
+
+  var UI = {
+    S: null,
+    el: {},
+    overlay: null,
+    modal: null,
+    closeable: true,
+    modalOpen: false,
+    noticeIdx: 0,
+    tickerTimer: null,
+    lastPoints: null,
+
+    /* ================= 初始化 ================= */
+    init: function () {
+      var self = this;
+      this.overlay = $('#overlay');
+      this.modal = $('#modal');
+      this.el.title = $('#screen-title');
+      this.el.game = $('#screen-game');
+      this.el.ending = $('#screen-ending');
+      this.el.toasts = $('#toasts');
+
+      $('#btn-start').addEventListener('click', function () { self.showRules(true); });
+      $('#btn-howto').addEventListener('click', function () { self.showRules(false); });
+      $('#btn-rules').addEventListener('click', function () { self.showRules(false); });
+      $('#btn-sound').addEventListener('click', function () {
+        var on = SFX.toggle();
+        self.updateSoundBtn();
+        self.toast(on ? '音效已开启。' : '音效已关闭。');
+      });
+      $('#btn-endweek').addEventListener('click', function () { self.endWeek(); });
+
+      $('#actions').addEventListener('click', function (ev) {
+        var btn = ev.target.closest('.action-btn');
+        if (!btn || btn.disabled) return;
+        self.act(btn.getAttribute('data-act'));
+      });
+
+      $('#shop-list').addEventListener('click', function (ev) {
+        var btn = ev.target.closest('[data-buy]');
+        if (!btn || btn.disabled) return;
+        var r = Game.buy(btn.getAttribute('data-buy'));
+        self.toast(r.msg);
+        if (r.ok) { SFX.play('coin'); self.renderAll(); }
+      });
+
+      this.overlay.addEventListener('click', function (ev) {
+        if (ev.target.getAttribute('data-close') && self.closeable && self.modalOpen) self.close();
+      });
+      document.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Escape' && self.modalOpen && self.closeable) self.close();
+      });
+
+      this.startTicker();
+      this.updateSoundBtn();
+    },
+
+    updateSoundBtn: function () {
+      var b = $('#btn-sound');
+      if (b) b.textContent = SFX.isOn() ? '♪' : '×';
+    },
+
+    startTicker: function () {
+      var self = this;
+      var el = $('#ticker-text');
+      var list = DATA.notices;
+      el.textContent = list[0];
+      this.tickerTimer = setInterval(function () {
+        self.noticeIdx = (self.noticeIdx + 1) % list.length;
+        el.style.opacity = '0';
+        setTimeout(function () {
+          el.textContent = list[self.noticeIdx];
+          el.style.opacity = '0.9';
+        }, 260);
+      }, 9000);
+    },
+
+    /* ================= 弹窗 ================= */
+    open: function (opts) {
+      var cls = 'modal' + (opts.size ? ' ' + opts.size : '');
+      this.modal.className = cls;
+      var head = '';
+      if (opts.title) {
+        head = '<div class="modal-head"><div>' +
+          '<div class="modal-title">' + opts.title + '</div>' +
+          (opts.sub ? '<div class="modal-sub">' + opts.sub + '</div>' : '') +
+          '</div>' +
+          (opts.closeable === false ? '' : '<button class="modal-close" data-close="1" aria-label="关闭">×</button>') +
+          '</div>';
+      }
+      this.modal.innerHTML = head +
+        '<div class="modal-body"' + (opts.pad === false ? ' style="padding:0"' : '') + '>' + opts.body + '</div>';
+      this.overlay.hidden = false;
+      this.modal.scrollTop = 0;
+      this.closeable = opts.closeable !== false;
+      this.modalOpen = true;
+      return this.modal;
+    },
+
+    close: function () {
+      if (window.Battle) Battle.destroy();
+      this.overlay.hidden = true;
+      this.modal.innerHTML = '';
+      this.modalOpen = false;
+    },
+
+    toast: function (msg, ms) {
+      var d = document.createElement('div');
+      d.className = 'toast';
+      d.innerHTML = msg;
+      this.el.toasts.appendChild(d);
+      setTimeout(function () {
+        d.classList.add('out');
+        setTimeout(function () { d.remove(); }, 320);
+      }, ms || 2600);
+    },
+
+    /* ================= 校规 ================= */
+    showRules: function (start) {
+      var self = this;
+      var body =
+        '<div class="doc">' +
+        '<h3>《校园打》使用守则</h3>' +
+        '<div class="doc-sub">校务会 · 2026 年第 1 号</div>' +
+        '<div class="rule"></div>' +
+        '<p>经校务会研究决定，自本学期起，全体大一新生统一安装「校园打」App，原「校园跑」功能即刻停止服务。请同学们相互转告，并做好心理准备。</p>' +
+        '<ol>' +
+        '<li><b>每周一战。</b>每周你必须在 App 上选择一位同学或老师进行决斗。</li>' +
+        '<li><b>不得拒绝。</b>若你被他人选中，且本周尚未进行过决斗，你不能拒绝。</li>' +
+        '<li><b>扫码结算。</b>胜者用 App 扫描败者的积分码，积分直接转移：你的涨，他的跌。</li>' +
+        '<li><b>积分即等级。</b>积分决定你在校内的待遇——食堂要不要排队，图书馆有没有座。</li>' +
+        '<li><b>校长副本。</b>每学年积分第一者，获得一次挑战校长与全体体育老师的机会。赢了，教师宿舍和办公室归你。</li>' +
+        '<li><b>支援系统。</b>你可以在别人决斗时随意加入一方（赢了两人一起加分，输了一起扣分）；也可以花积分雇人替你决斗。</li>' +
+        '<li><b>军团战。</b>大一只分班不分教室。想上课，只能以班级形式决斗；班内积分最高者任班长，负责战役指挥，打输了扣班长分。</li>' +
+        '</ol>' +
+        '<p>决斗采用三招相克：<b>猛攻</b>克<b>阴招</b>，<b>阴招</b>克<b>防守</b>，<b>防守</b>克<b>猛攻</b>。叫兄弟可以花 60 积分请一个学长进场帮忙，每场限一次。</p>' +
+        '<div class="rule"></div>' +
+        '<p class="doc-sign">校务会<br>体育组 · 学生工作处<br>2026 年 9 月 1 日</p>' +
+        '</div>' +
+        '<div class="modal-foot">' +
+        (this.S ? '<button class="btn btn-danger btn-sm" id="rules-restart">重新开始</button>' : '') +
+        '<button class="btn" data-close="1">' + (start ? '再想想' : '知道了') + '</button>' +
+        (start ? '<button class="btn btn-primary" id="rules-start">开始第一周</button>' : '') +
+        '</div>';
+
+      this.open({ title: '校规', sub: 'ADMISSION NOTICE', body: body });
+      if (start) {
+        $('#rules-start').addEventListener('click', function () {
+          self.close();
+          self.startGame();
+        });
+      }
+      var rst = $('#rules-restart');
+      if (rst) rst.addEventListener('click', function () { location.reload(); });
+    },
+
+    /* ================= 开局 ================= */
+    startGame: function () {
+      this.S = Game.newGame();
+      this.lastPoints = this.S.points;
+      this.el.title.classList.remove('is-active');
+      this.el.ending.classList.remove('is-active');
+      this.el.game.classList.add('is-active');
+      this.renderAll();
+      this.toast('<b>《校园打》</b> 已自动安装，无法卸载。');
+      SFX.play('stamp');
+    },
+
+    /* ================= 渲染 ================= */
+    renderAll: function () {
+      if (!this.S) return;
+      this.renderHud();
+      this.renderWeek();
+      this.renderActions();
+      this.renderHint();
+      this.renderLog();
+      this.renderRank();
+      this.renderShop();
+    },
+
+    renderHud: function () {
+      var S = this.S;
+      $('#hud-week').textContent = S.week + ' / ' + Game.MAX_WEEK;
+      var pts = $('#hud-points');
+      pts.textContent = fmt(S.points);
+      if (this.lastPoints !== null && S.points > this.lastPoints) {
+        pts.classList.remove('is-up');
+        void pts.offsetWidth;
+        pts.classList.add('is-up');
+      }
+      this.lastPoints = S.points;
+      $('#hud-rank').textContent = '#' + Game.rank();
+      $('#hud-tier').textContent = Game.tier().key;
+      $('#hud-power').textContent = S.power;
+      $('#hud-stamina').innerHTML = S.stamina + '<span class="dim">/' + S.maxStamina + '</span>';
+    },
+
+    renderWeek: function () {
+      var S = this.S;
+      $('#week-tag').textContent = '第 ' + S.week + ' 周 / ' + Game.MAX_WEEK;
+      var html = '';
+      for (var i = 1; i <= Game.MAX_WEEK; i++) {
+        var cls = 'week-cell';
+        if (i < S.week) cls += ' done';
+        if (i === S.week) cls += ' now';
+        html += '<div class="' + cls + '" title="第 ' + i + ' 周">' + (i < S.week ? '✓' : i) + '</div>';
+      }
+      $('#week-strip').innerHTML = html;
+
+      var pips = '';
+      for (var j = 0; j < S.maxActions; j++) pips += '<span class="ap-pip' + (j < S.actions ? '' : ' off') + '"></span>';
+      $('#ap-pips').innerHTML = pips;
+      $('#ap-text').textContent = '行动力 ' + S.actions + ' / ' + S.maxActions + ' · 体力 ' + S.stamina;
+    },
+
+    renderActions: function () {
+      var S = this.S;
+      var acts = [];
+      var isCW = S.classWarWeeks.indexOf(S.week) >= 0 && !S.classWarDone[S.week];
+
+      if (isCW) {
+        acts.push({
+          id: 'classwar', no: '00', special: true, sta: 0,
+          name: '军团战',
+          desc: '本周只有以班级形式决斗，才能上课。三班 VS 七班。',
+          cost: '行动 1 · 全班都在等你'
+        });
+      }
+      var cwWeek = S.classWarWeeks.indexOf(S.week) >= 0;
+      if (!cwWeek) acts.push({
+        id: 'duel', no: '01', sta: 15, name: '发起决斗',
+        desc: '在 App 上挑一个人。赢了扫走他的积分，输了他扫你。',
+        cost: '行动 1 · 体力 15'
+      });
+      acts.push({
+        id: 'train', no: '02', sta: 22, name: '特训',
+        desc: '战斗对身体的锻炼效率，是跑步的 1.8 倍。',
+        cost: '行动 1 · 体力 22'
+      });
+      if (!cwWeek) acts.push({
+        id: 'wander', no: '03', sta: 8, name: '在校园里闲逛',
+        desc: '可能会撞见正在约架的两个人。也有可能捡到积分卡。',
+        cost: '行动 1 · 体力 8'
+      });
+      acts.push({
+        id: 'rest', no: '04', sta: 0, name: '回宿舍休息',
+        desc: '睡觉。学校不反对，毕竟明天还要打。',
+        cost: '行动 1 · 恢复体力'
+      });
+
+      var html = acts.map(function (a) {
+        var noAp = S.actions <= 0;
+        var noSta = S.stamina < a.sta;
+        var dis = noAp || noSta;
+        var costText = noAp ? '行动力不足' : (noSta ? '体力不足（需要 ' + a.sta + '）' : a.cost);
+        return '<button class="action-btn' + (a.special ? ' special' : '') + '" data-act="' + a.id + '"' + (dis ? ' disabled' : '') + '>' +
+          '<span class="action-no">' + a.no + '</span>' +
+          '<span class="action-name">' + a.name + '</span>' +
+          '<span class="action-desc">' + a.desc + '</span>' +
+          '<span class="action-cost">' + costText + '</span>' +
+          '</button>';
+      }).join('');
+
+      $('#actions').innerHTML = html;
+      var endBtn = $('#btn-endweek');
+      endBtn.textContent = S.actions > 0 ? '提交本周 →' : '提交本周 →';
+      endBtn.classList.toggle('btn-primary', S.actions <= 0);
+      endBtn.classList.toggle('btn-solid', S.actions > 0);
+    },
+
+    renderHint: function () {
+      var S = this.S;
+      var html = '';
+      if (S.dueled) {
+        html = '<span class="done-tag">本周已决斗</span> 按校规，你已经应战过，没人能再强迫你。';
+      } else if (S.protected) {
+        html = '<span class="done-tag">举报信生效</span> 本周没人敢来挑战你。';
+      } else {
+        html = '<b>警告：</b>本周尚未决斗。被选中时，你不能拒绝。';
+      }
+      if (S.stamina < 20) html += ' <b>体力见底</b>，先休息吧。';
+      $('#week-hint').innerHTML = html;
+    },
+
+    renderLog: function () {
+      var S = this.S;
+      var list = S.log.slice(0, 9);
+      if (!list.length) {
+        $('#log').innerHTML = '<li class="log-empty">还没有战报。先去打一场。</li>';
+        return;
+      }
+      $('#log').innerHTML = list.map(function (l) {
+        return '<li class="log-' + l.type + '">' +
+          '<span class="log-week">W' + l.week + '</span>' +
+          '<span class="log-text">' + esc(l.text) + '</span></li>';
+      }).join('');
+    },
+
+    renderRank: function () {
+      var S = this.S;
+      var rank = Game.rank();
+      var tier = Game.tier();
+      $('#rank-me').innerHTML =
+        '<div class="rank-me-num">#' + rank + '</div>' +
+        '<div class="rank-me-meta">' +
+        '<div class="rank-me-title">' + tier.name + '</div>' +
+        '<div class="rank-me-sub">' + tier.perk + '</div>' +
+        '</div>';
+
+      var pr = Game.playerRankingList(9);
+      $('#rank-list').innerHTML = pr.list.map(function (n) {
+        var abs = Game.rankOf(n.points);
+        var isMe = !!n.me;
+        var cls = 'rank-row' + (isMe ? ' me' : '') + (abs <= 3 ? ' top' : '');
+        return '<li class="' + cls + '">' +
+          '<span class="rank-no">' + abs + '</span>' +
+          '<span class="rank-avatar">' + window.portrait(n.name + (n.role || ''), { gender: n.gender }) + '</span>' +
+          '<span class="rank-name">' + (isMe ? '你' : esc(n.name)) + '<i>' + (isMe ? '' : esc(n.role || '')) + '</i></span>' +
+          '<span class="rank-pts">' + fmt(n.points) + '</span>' +
+          '</li>';
+      }).join('');
+    },
+
+    renderShop: function () {
+      var self = this;
+      var S = this.S;
+      var items = Game.shopItems();
+      if (!items.length) { $('#shop-list').innerHTML = '<div class="shop-empty">今天没开门。</div>'; return; }
+      $('#shop-list').innerHTML = items.map(function (it) {
+        var d = it.def;
+        var can = !it.sold && S.points >= d.price;
+        return '<div class="shop-item' + (it.sold ? ' sold' : '') + '">' +
+          '<div class="shop-meta">' +
+          '<div class="shop-name">' + d.name + '<span class="shop-tag">' + d.tag + '</span></div>' +
+          '<div class="shop-desc">' + d.desc + '</div>' +
+          '</div>' +
+          '<span class="shop-price">' + d.price + ' 分</span>' +
+          '<button class="btn btn-sm" data-buy="' + d.id + '"' + (can ? '' : ' disabled') + '>' + (it.sold ? '售罄' : '买') + '</button>' +
+          '</div>';
+      }).join('');
+    },
+
+    /* ================= 行动 ================= */
+    act: function (id) {
+      var S = this.S;
+      if (!S || this.modalOpen) return;
+
+      if (S.classWarWeeks.indexOf(S.week) >= 0 && (id === 'duel' || id === 'wander')) {
+        return this.toast('军团战周：个人决斗暂停。本周以班级形式决斗。');
+      }
+      if (id === 'classwar') {
+        if (S.actions <= 0) return this.toast('行动力用完了。');
+        return this.showClassWar();
+      }
+      var cost = { duel: 15, train: 22, wander: 8, rest: 0 }[id];
+      if (S.actions <= 0) return this.toast('行动力用完了，提交本周吧。');
+      if (S.stamina < cost) return this.toast('体力不够。先去休息。');
+
+      SFX.play('click');
+      if (id === 'duel') return this.withChallenge(this.openTargets.bind(this));
+      if (id === 'train') return this.withChallenge(this.doTraining.bind(this));
+      if (id === 'wander') return this.withChallenge(this.doWander.bind(this));
+      if (id === 'rest') return this.doRest();
+    },
+
+    withChallenge: function (fn) {
+      var S = this.S;
+      if (S.dueled || S.protected) return fn();
+      if (Math.random() > 0.34) return fn();
+      this.incomingChallenge(null, fn);
+    },
+
+    doTraining: function () {
+      var S = this.S;
+      if (!Game.canAct(22)) return this.toast('体力不够，先去休息。');
+      var r = Game.train();
+      this.renderAll();
+      this.toast('特训完成。战力 +' + r.power + '，现在 ' + S.power + '。');
+      SFX.play('step');
+    },
+
+    doRest: function () {
+      var S = this.S;
+      if (!Game.canAct(0)) return this.toast('行动力用完了。');
+      var r = Game.rest();
+      this.renderAll();
+      this.toast('睡了一觉。体力 +' + r.stamina + '，现在 ' + S.stamina + '。');
+      SFX.play('step');
+    },
+
+    /* ================= 选择对手 ================= */
+    openTargets: function () {
+      var self = this;
+      var S = this.S;
+      if (!Game.canAct(15)) return this.toast('体力不够。');
+
+      var pr = Game.playerRankingList(11);
+      var rows = pr.list.map(function (n) {
+        var abs = Game.rankOf(n.points);
+        if (n.me) {
+          return '<div class="target-row" style="background:rgba(191,44,34,.06)">' +
+            '<span class="rank-no">' + abs + '</span>' +
+            '<div class="target-portrait">' + window.portrait('player-2026', { gender: 'm' }) + '</div>' +
+            '<div class="target-meta"><div class="target-name">你（大一新生）</div>' +
+            '<div class="target-bio">当前积分 ' + fmt(n.points) + '，战力 ' + n.power + '。</div></div>' +
+            '<div class="target-act"><span class="target-gain">这是你</span></div>' +
+            '</div>';
+        }
+        var danger = n.power >= S.power + 4;
+        var gain = Game.duelValue(n);
+        return '<div class="target-row' + (danger ? ' is-strong' : '') + '">' +
+          '<span class="rank-no">' + abs + '</span>' +
+          '<div class="target-portrait">' + window.portrait(n.name + n.role, { gender: n.gender }) + '</div>' +
+          '<div class="target-meta">' +
+          '<div class="target-name">' + esc(n.name) + '<span class="role-tag">' + esc(n.role) + '</span></div>' +
+          '<div class="target-bio">' + esc(n.bio || '一个普通的大一新生，看起来也想赢。') + '</div>' +
+          '<div class="target-stats">' +
+          '<span>积分 <b>' + fmt(n.points) + '</b></span>' +
+          '<span>战力 <b>' + n.power + '</b></span>' +
+          '<span class="' + (danger ? 'warn' : '') + '">' + (danger ? '⚠ 危险' : '可打') + '</span>' +
+          '</div></div>' +
+          '<div class="target-act">' +
+          '<button class="btn btn-sm btn-solid" data-fight="' + n.id + '">挑战</button>' +
+          '<div class="target-gain">赢了约 +' + gain + '</div>' +
+          '</div></div>';
+      }).join('');
+
+      var body = '<p style="font-size:12px;color:var(--muted);margin:0 0 6px">名单按积分排序，只显示你附近的人。挑一个你打得过的，或者一个你打不过但很值钱的。</p>' +
+        '<div class="target-list">' + rows + '</div>' +
+        '<div class="modal-foot"><button class="btn btn-sm" data-close="1">算了</button></div>';
+
+      this.open({ title: '本周名单', sub: 'CAMPUS FIGHT · 决斗匹配', body: body, size: 'wide' });
+      $$('[data-fight]', this.modal).forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var id = btn.getAttribute('data-fight');
+          var enemy = Game.S.npcs.filter(function (x) { return x.id === id; })[0];
+          self.close();
+          if (enemy) self.showPreFight(enemy);
+        });
+      });
+    },
+
+    showPreFight: function (enemy) {
+      var self = this;
+      var S = this.S;
+      var intel = DATA.personas[enemy.persona] || DATA.personas.balanced;
+      var gain = Game.duelValue(enemy);
+      var danger = enemy.power >= S.power + 4;
+      var body =
+        '<div class="duel-arena">' +
+        '<div class="fighter">' +
+        '<div class="portrait-lg">' + window.portrait('player-2026', { gender: 'm' }) + '</div>' +
+        '<div class="fighter-meta"><div class="fighter-name">你</div>' +
+        '<div class="fighter-power">战力 ' + S.power + ' · 积分 ' + fmt(S.points) + '</div>' +
+        '<div style="font-size:11px;color:var(--muted);line-height:1.7">本周剩余行动 ' + S.actions + ' · 体力 ' + S.stamina + '</div>' +
+        '</div></div>' +
+        '<div class="duel-vs">VS</div>' +
+        '<div class="fighter fighter-foe">' +
+        '<div class="portrait-lg">' + window.portrait(enemy.name + enemy.role, { gender: enemy.gender }) + '</div>' +
+        '<div class="fighter-meta"><div class="fighter-name">' + esc(enemy.name) + '</div>' +
+        '<div class="fighter-power">战力 ' + enemy.power + ' · 积分 ' + fmt(enemy.points) + '</div>' +
+        '<div style="font-size:11px;color:' + (danger ? 'var(--red)' : 'var(--muted)') + ';line-height:1.7">' + (danger ? '⚠ 他比你强不少。' : '✓ 可以一试。') + '</div>' +
+        '</div></div>' +
+        '</div>' +
+        '<div style="border:1px dashed rgba(23,19,14,.3);padding:10px 12px;margin:4px 0 0;font-size:12px;line-height:1.7">' +
+        '<b>情报：</b>' + intel.hint + '<br>' +
+        '<b>风险：</b>输了会被扫走约 ' + Math.round(clamp(S.points * 0.07, 30, 150)) + ' 积分。' +
+        '赢了约 +' + gain + '。<br>' +
+        '<b>规则：</b>三招相克。猛攻克阴招，阴招克防守，防守克猛攻。' +
+        '</div>' +
+        '<div class="modal-foot"><button class="btn" id="pre-cancel">换一个</button>' +
+        '<button class="btn btn-primary" id="pre-fight">开打</button></div>';
+
+      this.open({ title: '赛前确认', sub: 'PRE-FIGHT', body: body });
+      $('#pre-cancel').addEventListener('click', function () {
+        self.close();
+        setTimeout(function () { self.openTargets(); }, 120);
+      });
+      $('#pre-fight').addEventListener('click', function () {
+        self.close();
+        setTimeout(function () { self.duelFlow(enemy, 'duel', null); }, 80);
+      });
+    },
+
+    /* ================= 决斗流程 ================= */
+    runBattle: function (enemy, mode, opts, onResult) {
+      var self = this;
+      var cfg = opts || {};
+      this.open({
+        title: esc(enemy.name) + '<span style="font-family:var(--sans);font-size:11px;font-weight:400;color:#c9bfa9;margin-left:10px">' + esc(enemy.role || '') + '</span>',
+        sub: mode === 'boss' ? 'FINAL BOSS · LIVE' : (mode === 'classwar' ? 'CLASS WAR · LIVE' : 'SCHOOL FIGHT · LIVE'),
+        body: '<div id="duel-stage"></div>',
+        size: 'wide',
+        pad: false,
+        closeable: false
+      });
+      Battle.mount($('#duel-stage'), {
+        enemy: enemy,
+        mode: mode,
+        mods: cfg.mods || {},
+        enemyHp: cfg.enemyHp || 0,
+        onFinish: function (res) {
+          self.close();
+          onResult(res);
+        }
+      });
+      SFX.play('stamp');
+    },
+
+    duelFlow: function (enemy, mode, onDone) {
+      var self = this;
+      var S = this.S;
+      if (mode !== 'forced' && !Game.canAct(15)) return this.toast('体力不够。');
+      var beforeRank = Game.rank();
+
+      this.runBattle(enemy, mode || 'duel', {}, function (res) {
+        var change = Game.applyDuel(enemy, res.win);
+        self.showDuelReport(enemy, res.win, change, beforeRank, function () {
+          self.renderAll();
+          if (!res.win && S.stamina < 10) self.toast('体力见底。建议先休息。');
+          if (onDone) onDone();
+        });
+      });
+    },
+
+    showDuelReport: function (enemy, win, change, beforeRank, onDone) {
+      var self = this;
+      var afterRank = Game.rank();
+      var rankLine = beforeRank === afterRank
+        ? '排名没有变化，仍是 <b>#' + afterRank + '</b>。'
+        : '排名 <b>#' + beforeRank + '</b> → <b>#' + afterRank + '</b>。';
+
+      var body =
+        '<div class="duel-result" style="margin:0">' +
+        '<div class="result-stamp ' + (win ? 'win' : 'lose') + '">' + (win ? '胜' : '负') + '</div>' +
+        '<div class="result-text">' +
+        (win
+          ? '你赢了。<b>' + esc(enemy.name) + '</b> 把手机递过来，你扫走了 <span class="gain">' + change + '</span> 积分。'
+          : '你输了。<b>' + esc(enemy.name) + '</b> 扫了你的码，你损失了 <span class="loss">' + (change < 0 ? -change : change) + '</span> 积分。') +
+        '<br><span style="font-size:12px;color:var(--muted)">' + rankLine + ' 当前积分 ' + fmt(Game.S.points) + '。</span>' +
+        '</div>' +
+        '<div class="stat-grid">' +
+        '<div class="stat-box"><div class="k">积分</div><div class="v ' + (win ? '' : 'red') + '">' + (win ? '+' : '') + change + '</div></div>' +
+        '<div class="stat-box"><div class="k">战力</div><div class="v">' + (win ? '+' + 1 : '±0') + '</div></div>' +
+        '<div class="stat-box"><div class="k">排名</div><div class="v">#' + afterRank + '</div></div>' +
+        '</div>' +
+        '<button class="btn btn-primary" id="duel-report-ok">继续</button>' +
+        '</div>';
+
+      this.open({ title: '决斗通报', sub: 'RESULT', body: body });
+      $('#duel-report-ok').addEventListener('click', function () {
+        self.close();
+        if (win) SFX.play('coin');
+        if (onDone) onDone();
+      });
+    },
+
+    /* ================= 被挑战 ================= */
+    incomingChallenge: function (enemy, onDone) {
+      var self = this;
+      var S = this.S;
+      var e = enemy || Game.pickChallenger();
+      var intel = DATA.personas[e.persona] || DATA.personas.balanced;
+      var proxyCost = 120;
+      var body =
+        '<div class="doc" style="margin-bottom:8px">' +
+        '<p style="font-size:13px">你的手机震了一下。<b>「' + esc(e.name) + '」</b>在 App 上选择了你。</p>' +
+        '<p style="font-size:12px;color:var(--muted)">本周你还没有进行过决斗。按照校规，<b style="color:var(--red)">你不能拒绝</b>。</p>' +
+        '</div>' +
+        '<div class="duel-arena" style="padding:0">' +
+        '<div class="fighter">' +
+        '<div class="portrait-lg">' + window.portrait('player-2026', { gender: 'm' }) + '</div>' +
+        '<div class="fighter-meta"><div class="fighter-name">你</div>' +
+        '<div class="fighter-power">战力 ' + S.power + '</div>' +
+        '<div style="font-size:11px;color:var(--muted)">体力 ' + S.stamina + ' · 积分 ' + fmt(S.points) + '</div></div></div>' +
+        '<div class="duel-vs">VS</div>' +
+        '<div class="fighter fighter-foe">' +
+        '<div class="portrait-lg">' + window.portrait(e.name + e.role, { gender: e.gender }) + '</div>' +
+        '<div class="fighter-meta"><div class="fighter-name">' + esc(e.name) + '</div>' +
+        '<div class="fighter-power">战力 ' + e.power + '</div>' +
+        '<div style="font-size:11px;color:' + (e.power > S.power + 4 ? 'var(--red)' : 'var(--muted)') + '">' + (e.power > S.power + 4 ? '⚠ 打不过' : '可以打') + '</div></div></div>' +
+        '</div>' +
+        '<div class="choices">' +
+        '<button class="choice" id="ic-fight"><b>迎战</b><span>按校规，你没有别的选择。打赢了扫他，打输了他扫你。</span></button>' +
+        '<button class="choice" id="ic-hire" ' + (S.points < proxyCost ? 'disabled' : '') + '><b>花 ' + proxyCost + ' 积分雇人代打</b><span>校门口的一个「表哥」接了单。他战力大概 44。' + (S.points < proxyCost ? '（积分不足）' : '') + '</span></button>' +
+        '</div>';
+
+      this.open({ title: '你被选中了', sub: 'MANDATORY MATCH', body: body, closeable: false });
+      $('#ic-fight').addEventListener('click', function () {
+        self.close();
+        setTimeout(function () { self.duelFlow(e, 'forced', onDone); }, 80);
+      });
+      $('#ic-hire').addEventListener('click', function () {
+        if (S.points < proxyCost) return;
+        Game.addPoints(-proxyCost);
+        self.close();
+        var win = Math.random() < clamp(0.52 + (44 - e.power) * 0.03, 0.12, 0.9);
+        var change = Game.applyDuel(e, win);
+        SFX.play(win ? 'coin' : 'lose');
+        var rk = Game.rank();
+        var body2 =
+          '<div class="duel-result" style="margin:0">' +
+          '<div class="result-stamp ' + (win ? 'win' : 'lose') + '">' + (win ? '代打赢' : '代打输') + '</div>' +
+          '<div class="result-text">' + (win
+            ? '「表哥」把 ' + esc(e.name) + ' 按在墙上，掏出你的手机扫了码。你付了他 120 积分，净赚 ' + change + '。'
+            : '「表哥」收了钱，打输了。你的积分被扫走 ' + (change < 0 ? -change : change) + '，还倒贴了 120。') +
+          '<br><span style="font-size:12px;color:var(--muted)">当前积分 ' + fmt(Game.S.points) + ' · 排名 #' + rk + '</span></div>' +
+          '<button class="btn btn-primary" id="hire-ok">继续</button></div>';
+        self.open({ title: '代打通报', sub: 'PROXY FIGHT', body: body2 });
+        $('#hire-ok').addEventListener('click', function () {
+          self.close();
+          self.renderAll();
+          if (onDone) onDone();
+        });
+      });
+    },
+
+    /* ================= 闲逛 ================= */
+    doWander: function () {
+      var self = this;
+      var S = this.S;
+      if (!Game.canAct(8)) return this.toast('体力不够。');
+      var ev = Game.rollWander();
+      var body =
+        '<div class="doc"><h3 style="font-size:19px">' + ev.title + '</h3>' +
+        '<p>' + ev.text + '</p></div>' +
+        '<div class="choices">' +
+        ev.choices.map(function (c, i) {
+          return '<button class="choice" data-side="' + c.side + '"><b>' + c.label + '</b></button>';
+        }).join('') +
+        '</div>';
+      this.open({ title: '校园闲逛', sub: 'WANDER', body: body, closeable: false });
+      $$('[data-side]', this.modal).forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var r = Game.resolveWander(ev, btn.getAttribute('data-side'));
+          self.close();
+          self.renderAll();
+          var body2 = '<div class="report"><div class="report-body"><p>' + r.text + '</p></div>' +
+            '<div class="modal-foot"><button class="btn btn-primary" id="wander-ok">继续</button></div></div>';
+          self.open({ title: '闲逛结果', sub: 'RESULT', body: body2 });
+          $('#wander-ok').addEventListener('click', function () { self.close(); });
+          SFX.play(r.points > 0 ? 'coin' : 'step');
+        });
+      });
+    },
+
+    /* ================= 军团战 ================= */
+    showClassWar: function () {
+      var self = this;
+      var S = this.S;
+      var info = Game.classWarInfo();
+      var intel = DATA.personas[info.persona] || DATA.personas.balanced;
+      var body =
+        '<div class="doc"><p>大一只分班，不分教室。这周想上课，三班和七班得先打一场。</p>' +
+        '<p style="font-size:12px;color:var(--muted)">你是班内积分最高的人，按校规自动担任<b>班长</b>，负责战役指挥。打输了，班长扣分。</p></div>' +
+        '<div class="duel-arena" style="padding:0 0 6px">' +
+        '<div class="fighter">' +
+        '<div class="portrait-lg">' + window.portrait('player-2026', { gender: 'm' }) + '</div>' +
+        '<div class="fighter-meta"><div class="fighter-name">三班 · 你</div><div class="fighter-power">班长 · 战力 ' + S.power + '</div></div></div>' +
+        '<div class="duel-vs">VS</div>' +
+        '<div class="fighter fighter-foe">' +
+        '<div class="portrait-lg">' + window.portrait('七班班长-军团', { gender: 'm' }) + '</div>' +
+        '<div class="fighter-meta"><div class="fighter-name">' + info.enemyName + '</div><div class="fighter-power">战力 ' + info.power + '</div></div></div>' +
+        '</div>' +
+        '<div class="choices">' +
+        info.tactics.map(function (t) {
+          return '<button class="choice" data-tactic="' + t.id + '"><b>' + t.name + '</b><span>' + t.desc + '</span></button>';
+        }).join('') +
+        '</div>';
+
+      this.open({ title: '军团战', sub: 'CLASS WAR · WEEK ' + S.week, body: body, closeable: false });
+      $$('[data-tactic]', this.modal).forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var tactic = btn.getAttribute('data-tactic');
+          if (tactic === 'hire' && S.points < 80) return self.toast('积分不够，摇不来人。');
+          self.close();
+          var mods = {};
+          if (tactic === 'front') mods = { playerDmg: 1.2, enemyDmg: 1.1 };
+          if (tactic === 'flank') mods = {};
+          if (tactic === 'hire') { Game.addPoints(-80); mods = { playerDmg: 1.35 }; }
+          var enemy = {
+            id: 'cw', name: info.enemyName, role: info.role, gender: 'm',
+            power: info.power, points: info.points, persona: info.persona,
+            bio: info.bio
+          };
+          setTimeout(function () {
+            self.runBattle(enemy, 'classwar', { mods: mods, enemyHp: tactic === 'flank' ? -25 : 0 }, function (res) {
+              var out = Game.classWarResult(res.win, tactic);
+              self.renderAll();
+              var body2 = '<div class="duel-result" style="margin:0">' +
+                '<div class="result-stamp ' + (res.win ? 'win' : 'lose') + '">' + (res.win ? '班胜' : '班败') + '</div>' +
+                '<div class="result-text">' + out.text + '</div>' +
+                '<div class="stat-grid">' +
+                '<div class="stat-box"><div class="k">积分</div><div class="v ' + (res.win ? '' : 'red') + '">' + (out.points > 0 ? '+' : '') + out.points + '</div></div>' +
+                '<div class="stat-box"><div class="k">战力</div><div class="v">' + (out.power ? '+' + out.power : '±0') + '</div></div>' +
+                '<div class="stat-box"><div class="k">排名</div><div class="v">#' + Game.rank() + '</div></div>' +
+                '</div>' +
+                '<button class="btn btn-primary" id="cw-ok">继续</button></div>';
+              self.open({ title: '军团战通报', sub: 'CLASS WAR RESULT', body: body2 });
+              $('#cw-ok').addEventListener('click', function () { self.close(); self.renderAll(); });
+            });
+          }, 80);
+        });
+      });
+    },
+
+    /* ================= 周结算 ================= */
+    endWeek: function () {
+      if (!this.S || this.modalOpen) return;
+      var self = this;
+      var S = this.S;
+      if (S.actions > 0) {
+        var body = '<div class="doc"><p>你还有 <b>' + S.actions + '</b> 点行动力没用完。</p>' +
+          '<p style="font-size:12px;color:var(--muted)">提交后本周结束。没打完的架，下周再打。</p></div>' +
+          '<div class="modal-foot"><button class="btn" id="ew-cancel">继续行动</button>' +
+          '<button class="btn btn-primary" id="ew-ok">就这样提交</button></div>';
+        this.open({ title: '提交本周？', sub: 'END WEEK', body: body });
+        $('#ew-cancel').addEventListener('click', function () { self.close(); });
+        $('#ew-ok').addEventListener('click', function () { self.close(); self.proceedEndWeek(); });
+      } else {
+        this.proceedEndWeek();
+      }
+    },
+
+    proceedEndWeek: function () {
+      var self = this;
+      var S = this.S;
+      var cont = function () {
+        var ev = Game.rollWeeklyEvent();
+        var pen = Game.checkClassWarPenalty();
+        self.showWeekSummary(ev, pen);
+      };
+      if (!S.dueled && !S.protected && Math.random() < 0.8) {
+        var enemy = Game.pickChallenger();
+        var body = '<div class="doc"><p>周五下午，App 弹出提醒：<b>本周你还没有决斗记录。</b></p>' +
+          '<p>系统自动为你匹配了一位对手。按照校规，被选中且未决斗者，<b style="color:var(--red)">不得拒绝</b>。</p></div>' +
+          '<div class="modal-foot"><button class="btn btn-primary" id="fw-go">去操场</button></div>';
+        this.open({ title: '周末清点', sub: 'AUTO MATCH', body: body, closeable: false });
+        $('#fw-go').addEventListener('click', function () {
+          self.close();
+          setTimeout(function () { self.incomingChallenge(enemy, cont); }, 80);
+        });
+      } else {
+        cont();
+      }
+    },
+
+    showWeekSummary: function (ev, pen) {
+      var self = this;
+      var S = this.S;
+      var rank = Game.rank();
+      var isLast = S.week >= Game.MAX_WEEK;
+      var preview = '';
+      if (!isLast) {
+        if (S.classWarWeeks.indexOf(S.week + 1) >= 0) preview = '<b style="color:var(--red)">下周是军团战周</b>，记得留一点行动力。';
+        else preview = '下周同一时间，App 会自动刷新名单。';
+      }
+
+      var body =
+        '<div class="report">' +
+        '<div class="report-head"><h3>第 ' + S.week + ' 周结算</h3><div class="no">WEEKLY REPORT · NO.' + S.week + '</div></div>' +
+        '<div class="report-body">' +
+        '<p><b>本周事件：</b>' + ev.text + '</p>' +
+        (pen ? '<p class="loss">' + pen + '</p>' : '') +
+        '<p>你打了 <span class="hl">' + S.weekStats.duels + '</span> 场，特训 ' + S.weekStats.trained + ' 次' +
+        (S.weekStats.wanders ? ('，闲逛 ' + S.weekStats.wanders + ' 次') : '') +
+        (S.weekStats.classwar ? '，参加了军团战' : '') +
+        '。当前积分 <span class="hl">' + fmt(S.points) + '</span>，排名 <span class="hl">#' + rank + '</span>。</p>' +
+        (isLast ? '<p><b>学年结束。</b>校务会开始统计最终积分，积分第一者将获得校长副本资格。</p>' : '<p>' + preview + '</p>') +
+        '</div>' +
+        '<div class="report-sign">校务会 · 学生工作处' +
+        '<br><span class="seal">已阅</span></div>' +
+        '</div>' +
+        '<div class="modal-foot"><button class="btn btn-primary" id="ws-next">' +
+        (isLast ? '查看学年结算' : '进入第 ' + (S.week + 1) + ' 周') + '</button></div>';
+
+      this.open({ title: '周结算', sub: 'WEEK ' + S.week + ' / ' + Game.MAX_WEEK, body: body, closeable: false });
+      $('#ws-next').addEventListener('click', function () {
+        self.close();
+        if (isLast) {
+          self.finishYear();
+        } else {
+          Game.startWeek();
+          self.renderAll();
+          self.lastPoints = self.S.points;
+          self.toast('第 <b>' + self.S.week + '</b> 周开始。');
+          if (self.S.classWarWeeks.indexOf(self.S.week) >= 0) {
+            self.toast('本周是 <b>军团战周</b>，别忘了上课。', 4000);
+          }
+        }
+      });
+    },
+
+    /* ================= 学年结束 ================= */
+    finishYear: function () {
+      var rank = Game.finalRank();
+      if (rank === 1) return this.showBossIntro();
+      this.showEnding(this.endingKey(rank));
+    },
+
+    endingKey: function (rank) {
+      if (rank === 1) return 'principal';
+      if (rank <= 3) return 'rank2';
+      if (rank <= 10) return 'rank10';
+      if (rank <= 200) return 'rank50';
+      return 'rankrest';
+    },
+
+    showBossIntro: function () {
+      var self = this;
+      var lineup = Game.bossLineup();
+      var body =
+        '<div class="doc">' +
+        '<p>最终积分结算：你是全校第一。</p>' +
+        '<p>按照校规，你获得一次挑战<b>校长副本</b>的机会。校长会带着全校的体育老师，和你发生一次战斗。</p>' +
+        '<p style="font-size:12px;color:var(--muted)">顺序：' + lineup.map(function (e) { return e.name + '（战力 ' + e.power + '）'; }).join(' → ') + '</p>' +
+        '<p style="font-size:12px;color:var(--muted)">每关之间你会被校医简单处理一下。叫兄弟每场限一次。</p>' +
+        '</div>' +
+        '<div class="modal-foot" style="border-top:1px dashed rgba(23,19,14,.3);margin-top:6px"><button class="btn btn-primary" id="boss-go">开打 →</button></div>';
+      this.open({ title: '校长副本', sub: 'FINAL BOSS', body: body, closeable: false });
+      $('#boss-go').addEventListener('click', function () {
+        self.close();
+        setTimeout(function () { self.startBoss(0); }, 100);
+      });
+    },
+
+    startBoss: function (i) {
+      var self = this;
+      var lineup = Game.bossLineup();
+      if (i >= lineup.length) return this.showEnding('principal');
+      var e = lineup[i];
+      this.runBattle(e, 'boss', {}, function (res) {
+        if (!res.win) return self.showEnding('dorm');
+        if (i === lineup.length - 1) {
+          Game.S.bossCleared = true;
+          return self.showEnding('principal');
+        }
+        var body = '<div class="doc"><p>你赢了第 ' + (i + 1) + ' 关。</p>' +
+          '<p><b>' + e.name + '</b> 被抬去了校医院。下一关：<b>' + lineup[i + 1].name + '</b>（战力 ' + lineup[i + 1].power + '）。</p>' +
+          '<p style="font-size:12px;color:var(--muted)">校医给你贴了块膏药。生命值已回满。</p></div>' +
+          '<div class="modal-foot"><button class="btn btn-primary" id="boss-next">继续</button></div>';
+        self.open({ title: '副本进度', sub: (i + 2) + ' / ' + lineup.length, body: body, closeable: false });
+        $('#boss-next').addEventListener('click', function () {
+          self.close();
+          setTimeout(function () { self.startBoss(i + 1); }, 120);
+        });
+      });
+    },
+
+    /* ================= 结局 ================= */
+    showEnding: function (key) {
+      var S = this.S;
+      if (S) S.over = true;
+      var data = ENDINGS[key] || ENDINGS.rank50;
+      var rank = Game.rank();
+      var tier = Game.tier();
+      var sec = this.el.ending;
+      var record = S.wins + ' 胜 ' + S.losses + ' 负';
+
+      sec.innerHTML =
+        '<div class="ending-sheet">' +
+        '<div class="end-kicker">' + data.kicker + '</div>' +
+        '<h2>' + data.title + '</h2>' +
+        '<div class="end-sub">' + data.sub + '</div>' +
+        '<div class="end-stamp">' + data.stamp + '</div>' +
+        '<div class="end-story">' + data.story.map(function (p) { return '<p>' + p + '</p>'; }).join('') + '</div>' +
+        '<div class="end-stats">' +
+        '<div class="end-stat"><div class="k">最终积分</div><div class="v">' + fmt(S.points) + '</div></div>' +
+        '<div class="end-stat"><div class="k">最终排名</div><div class="v">#' + rank + '</div></div>' +
+        '<div class="end-stat"><div class="k">战力</div><div class="v">' + S.power + '</div></div>' +
+        '<div class="end-stat"><div class="k">战绩</div><div class="v" style="font-size:13px;line-height:1.6;padding-top:3px">' + record + '</div></div>' +
+        '</div>' +
+        '<div style="font-size:11px;color:var(--muted);line-height:1.8;border-top:1px dashed rgba(23,19,14,.3);padding-top:12px">' +
+        '等级称号：' + tier.name + '<br>' +
+        '「校园跑」完成度：0 / 30 km　·　「校园打」参与度：' + (S.wins + S.losses) + ' 场<br>' +
+        '本作纯属虚构。请勿在现实校园内模仿任何一条校规。' +
+        '</div>' +
+        '<div class="end-actions"><button class="btn btn-primary btn-lg" id="end-again">再来一学年</button></div>' +
+        '</div>';
+
+      this.el.game.classList.remove('is-active');
+      this.el.ending.classList.add('is-active');
+      sec.scrollTop = 0;
+      SFX.play(key === 'principal' ? 'win' : 'stamp');
+      $('#end-again').addEventListener('click', function () { location.reload(); });
+    }
+  };
+
+  window.UI = UI;
+})();
+
+
+
+
+
+</script>
+<script>
+(function () {
+  'use strict';
+  function boot() {
+    if (window.UI) UI.init();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+})();
+
+</script>
+</body>
+</html>
